@@ -200,6 +200,14 @@
     <dashboard-category
         android:id="@+id/system_section"
         android:title="@string/header_category_system" >
+      
+        <!-- Superuser -->
+        <dashboard-tile
+                android:id="@+id/superuser"
+                android:title="@string/superuser"
+                android:fragment="com.koushikdutta.superuser.PolicyNativeFragment"
+                android:icon="@drawable/ic_action_permission"
+                />
 
         <!-- Date & Time -->
         <dashboard-tile
