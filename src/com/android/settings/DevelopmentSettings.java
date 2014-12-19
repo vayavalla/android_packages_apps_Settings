@@ -250,7 +250,7 @@ public class DevelopmentSettings extends SettingsPreferenceFragment
             = new ArrayList<CheckBoxPreference>();
 
     private final HashSet<Preference> mDisabledPrefs = new HashSet<Preference>();
-    // To track whether a confirmation dialog waHELP_NAOSPROMs clicked.
+    // To track whether a confirmation dialog was clicked.
     private boolean mDialogClicked;
     private Dialog mEnableDialog;
     private Dialog mAdbDialog;
