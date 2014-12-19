@@ -5979,4 +5979,22 @@
    <!-- Message for encryption dialog telling the user that Talkback and other accessibility services will be disabled. -->
    <string name="encrypt_talkback_dialog_message_password">When you enter your password to start this device, accessibility services like <xliff:g id="service" example="TalkBack">%1$s</xliff:g> won\'t yet be available.</string>
 
+   <!-- nAOSProm -->
+   <!-- Preference category for nAOSProm. [CHAR LIMIT=25] -->
+   <string name="nAOSProm_category">nAOSProm</string>
+   
+   <!-- UI debug setting: help summary [CHAR LIMIT=25] -->
+   <string name="help_naosprom_summary">(*) need a reboot, (**) need a reflash</string>
+   
+   <!-- UI debug setting: zram [CHAR LIMIT=25] -->
+   <string name="use_zram_title">Swap/zram (*)</string>
+
+   <!-- UI debug setting: lightbar [CHAR LIMIT=25] -->
+   <string name="use_lightbar_title">Use light bar (*)</string>
+   <!-- UI debug setting: lightbar summary [CHAR LIMIT=50] -->
+   <string name="use_lightbar_summary">Controls lighting of the light bar</string>
+   
+   <!-- UI debug setting: kernel [CHAR LIMIT=25] -->
+   <string name="use_kernel_title">Overclocking (**)</string>
+   
 </resources>

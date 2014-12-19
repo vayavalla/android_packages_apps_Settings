@@ -1,0 +1,110 @@
+#!/system/bin/sh
+
+SETGET=$1
+CMD=$2
+SETVAL=$3
+
+KERNEL_PROP=/sdcard/.nAOSProm.prop
+BUILD_PROP=/system/build.prop
+
+help() {
+    echo "
+naospromctl usage:
+
+naosprom <get|set> <prop> [<value to set>]
+
+get:
+  zram-enable : is zram enable on boot ?
+  zram-size : display the zram disk size in octet
+  lightbar-enable : is lightbar enable on boot ?
+  kernel : kernel that will be flashed in the recovery
+  
+set:
+  zram-enable <true|false> : enable or not zram (reboot required)
+  zram-size <value in octet> : set the disk size (reboot required)
+  lightbar-enable <true|false> : enable or not lightbar below the screen (reboot required)
+  kernel <standard|oc|oc_ultra> : kernel to use for the next flash of the rom
+"
+
+    exit 1
+}
+
+[ $# -lt 2 ] && help
+[ "$SETGET" == "set" ] && [ $# -ne 3 ] && help
+
+case "$SETGET" in
+    "get")
+
+        case "$CMD" in
+            "zram-enable")
+                /system/xbin/egrep '^sys.zram.enable=' $BUILD_PROP 2>/dev/null | /system/xbin/cut -d= -f2
+                ;;
+            "zram-size")
+                /system/xbin/egrep '^sys.zram.size=' $BUILD_PROP 2>/dev/null | /system/xbin/cut -d= -f2
+                ;;
+            "kernel")
+                echo "
+                    (/system/xbin/egrep '^kernel=' $KERNEL_PROP 2>/dev/null || echo \"kernel=standard\") | /system/xbin/cut -d= -f2
+                    " | su
+                ;;
+            "lightbar-enable")
+                /system/xbin/egrep '^sys.lightbar.enable=' $BUILD_PROP 2>/dev/null | /system/xbin/cut -d= -f2
+                ;;
+            *)
+                help
+                ;;
+        esac
+        
+        #end get
+        ;;
+    
+    "set")
+    
+        REMOUNT=0
+        if (grep '/system' /proc/mounts | cut -d' ' -f4 | grep -q 'ro'); then
+            REMOUNT=1
+        fi
+        
+        case "$CMD" in
+            "kernel")
+                echo "
+                    if ( egrep -q '^kernel=' $KERNEL_PROP 2>/dev/null ); then
+                        sed -i \"s/^kernel=.*/kernel=$SETVAL/\" $KERNEL_PROP
+                    else
+                        echo \"kernel=$SETVAL\" >> $KERNEL_PROP
+                    fi
+                    " | su
+                ;;
+            "zram-size")
+                echo "
+                    [ $REMOUNT -eq 1 ] && mount -o remount,rw /system ;
+                    sed -i \"s/^sys.zram.size=.*/sys.zram.size=$SETVAL/\" $BUILD_PROP ;
+                    [ $REMOUNT -eq 1 ] && mount -o remount,ro /system ;
+                    " | su
+                ;;
+            "zram-enable")
+                echo "
+                    [ $REMOUNT -eq 1 ] && mount -o remount,rw /system ;
+                    sed -i \"s/^sys.zram.enable=.*/sys.zram.enable=$SETVAL/\" $BUILD_PROP ;
+                    [ $REMOUNT -eq 1 ] && mount -o remount,ro /system ;
+                    " | su
+                ;;
+            "lightbar-enable")
+                echo "
+                    [ $REMOUNT -eq 1 ] && mount -o remount,rw /system ;
+                    sed -i \"s/^sys.lightbar.enable=.*/sys.lightbar.enable=$SETVAL/\" $BUILD_PROP ;
+                    [ $REMOUNT -eq 1 ] && mount -o remount,ro /system ;
+                    " | su
+                ;;
+            *)                                                                                                               
+                help                                                                                                         
+                ;;
+        esac
+        
+        #end set
+        ;;
+
+esac
+
+exit 0
+

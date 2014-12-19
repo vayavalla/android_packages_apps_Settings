@@ -312,5 +312,35 @@
             android:summary="@string/show_all_anrs_summary"/>
 
      </PreferenceCategory>
+     
+     <!-- nAOSProm -->
+     <PreferenceCategory android:key="nAOSProm_category"
+            android:title="@string/nAOSProm_category">
+       
+       <Preference
+            android:key="help_naosprom"
+            android:summary="@string/help_naosprom_summary"
+            android:selectable="false"/>
+
+        <ListPreference
+            android:key="use_zram"
+            android:title="@string/use_zram_title"
+            android:persistent="false"
+            android:entries="@array/use_zram_entries"
+            android:entryValues="@array/use_zram_values" />
+
+        <CheckBoxPreference
+            android:key="use_lightbar"
+            android:title="@string/use_lightbar_title"
+            android:summary="@string/use_lightbar_summary"/>
+
+        <ListPreference
+            android:key="use_kernel"
+            android:title="@string/use_kernel_title"
+            android:persistent="false"
+            android:entries="@array/use_kernel_entries"
+            android:entryValues="@array/use_kernel_values" />
+
+     </PreferenceCategory>
 
 </PreferenceScreen>

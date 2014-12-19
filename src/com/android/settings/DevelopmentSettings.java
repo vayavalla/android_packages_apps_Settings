@@ -72,6 +72,10 @@ import java.util.Arrays;
 import java.util.HashSet;
 import java.util.List;
 
+//nAOSProm
+import java.io.BufferedReader;
+import java.io.InputStreamReader;
+
 /*
  * Displays preferences for application developers.
  */
@@ -164,6 +168,11 @@ public class DevelopmentSettings extends SettingsPreferenceFragment
     private static final String PERSISTENT_DATA_BLOCK_PROP = "ro.frp.pst";
 
     private static String DEFAULT_LOG_RING_BUFFER_SIZE_IN_BYTES = "262144"; // 256K
+    
+    //nAOSProm
+    private static final String USE_ZRAM_KEY = "use_zram";
+    private static final String USE_LIGHTBAR_KEY = "use_lightbar";
+    private static final String USE_KERNEL_KEY = "use_kernel";
 
     private IWindowManager mWindowManager;
     private IBackupManager mBackupManager;
@@ -228,6 +237,11 @@ public class DevelopmentSettings extends SettingsPreferenceFragment
     private ListPreference mAppProcessLimit;
 
     private CheckBoxPreference mShowAllANRs;
+    
+    //nAOSProm
+    private ListPreference mUseZram;
+    private CheckBoxPreference mUseLightbar;
+    private ListPreference mUseKernel;
 
     private PreferenceScreen mProcessStats;
     private final ArrayList<Preference> mAllPrefs = new ArrayList<Preference>();
@@ -236,7 +250,7 @@ public class DevelopmentSettings extends SettingsPreferenceFragment
             = new ArrayList<CheckBoxPreference>();
 
     private final HashSet<Preference> mDisabledPrefs = new HashSet<Preference>();
-    // To track whether a confirmation dialog was clicked.
+    // To track whether a confirmation dialog waHELP_NAOSPROMs clicked.
     private boolean mDialogClicked;
     private Dialog mEnableDialog;
     private Dialog mAdbDialog;
@@ -365,6 +379,11 @@ public class DevelopmentSettings extends SettingsPreferenceFragment
 
         mProcessStats = (PreferenceScreen) findPreference(PROCESS_STATS);
         mAllPrefs.add(mProcessStats);
+        
+        //nAOSProm
+        mUseZram = addListPreference(USE_ZRAM_KEY);
+        mUseLightbar = findAndInitCheckboxPref(USE_LIGHTBAR_KEY);
+        mUseKernel = addListPreference(USE_KERNEL_KEY);
     }
 
     private ListPreference addListPreference(String prefKey) {
@@ -544,6 +563,11 @@ public class DevelopmentSettings extends SettingsPreferenceFragment
         updateSimulateColorSpace();
         updateUseNuplayerOptions();
         updateUSBAudioOptions();
+        
+        //nAOSProm
+        updateUseZramOptions();
+        updateUseLightbarOptions();
+        updateUseKernelOptions();
     }
 
     private void resetDangerousOptions() {
@@ -1276,7 +1300,105 @@ public class DevelopmentSettings extends SettingsPreferenceFragment
         updateCheckBox(mShowAllANRs, Settings.Secure.getInt(
             getActivity().getContentResolver(), Settings.Secure.ANR_SHOW_BACKGROUND, 0) != 0);
     }
-
+    
+    //nAOSProm
+    
+    private void updateUseZramOptions() {
+        String value = _naospromctl(new String[]{"/system/bin/sh",
+                               "/system/xbin/naospromctl",
+                               "get",
+                               "zram-size"});
+    
+        CharSequence[] values = mUseZram.getEntryValues();
+        for (int i = 0; i < values.length; i++) {
+            if (value.contentEquals(values[i])) {
+                mUseZram.setValueIndex(i);
+                mUseZram.setSummary(mUseZram.getEntries()[i]);
+                return;
+            }
+        }
+        
+        //Manual setting
+        mUseZram.setValueIndex(values.length - 1);
+        mUseZram.setSummary(mUseZram.getEntries()[values.length - 1]);
+    }
+    
+    private void writeUseZramOptions(Object newValue) {
+        if (newValue.toString().contentEquals("-1")) {
+            //parameters will be defined outside settings
+            updateUseZramOptions();
+            return;
+        }
+    
+        _naospromctl(new String[]{"/system/bin/sh",
+                               "/system/xbin/naospromctl",
+                               "set",
+                               "zram-size",
+                               newValue.toString()});
+        
+        _naospromctl(new String[]{"/system/bin/sh",
+                               "/system/xbin/naospromctl",
+                               "set",
+                               "zram-enable",
+                               newValue.toString().contentEquals("0") ? "false" : "true"});
+                               
+        updateUseZramOptions();
+    }
+    
+    private void updateUseLightbarOptions() {
+        String value = _naospromctl(new String[]{"/system/bin/sh",
+                               "/system/xbin/naospromctl",
+                               "get",
+                               "lightbar-enable"});
+        updateCheckBox(mUseLightbar, !value.contentEquals("false"));
+    }
+    
+    private void writeUseLightbarOptions() {
+        _naospromctl(new String[]{"/system/bin/sh",
+                               "/system/xbin/naospromctl",
+                               "set",
+                               "lightbar-enable",
+                               mUseLightbar.isChecked() ? "true" : "false"});
+                               
+        updateUseLightbarOptions();
+    }
+    
+    private void updateUseKernelOptions() {
+        String value = _naospromctl(new String[]{"/system/bin/sh",
+                               "/system/xbin/naospromctl",
+                               "get",
+                               "kernel"});
+    
+        CharSequence[] values = mUseKernel.getEntryValues();
+        for (int i = 0; i < values.length; i++) {
+            if (value.contentEquals(values[i])) {
+                mUseKernel.setValueIndex(i);
+                mUseKernel.setSummary(mUseKernel.getEntries()[i]);
+                return;
+            }
+        }
+        
+        //Manual setting
+        mUseKernel.setValueIndex(values.length - 1);
+        mUseKernel.setSummary(mUseKernel.getEntries()[values.length - 1]);
+    }
+    
+    private void writeUseKernelOptions(Object newValue) {
+        if (newValue.toString().contentEquals("-1")) {
+            //parameters will be defined outside settings
+            updateUseKernelOptions();
+            return;
+        }
+        
+        _naospromctl(new String[]{"/system/bin/sh",
+                               "/system/xbin/naospromctl",
+                               "set",
+                               "kernel",
+                               newValue.toString()});
+                               
+        updateUseKernelOptions();
+    }
+    
     @Override
     public void onSwitchChanged(Switch switchView, boolean isChecked) {
         if (switchView != mSwitchBar.getSwitch()) {
@@ -1420,6 +1542,8 @@ public class DevelopmentSettings extends SettingsPreferenceFragment
             writeUseNuplayerOptions();
         } else if (preference == mUSBAudio) {
             writeUSBAudioOptions();
+        } else if (preference == mUseLightbar) {
+            writeUseLightbarOptions();
         } else {
             return super.onPreferenceTreeClick(preferenceScreen, preference);
         }
@@ -1466,6 +1590,12 @@ public class DevelopmentSettings extends SettingsPreferenceFragment
             return true;
         } else if (preference == mSimulateColorSpace) {
             writeSimulateColorSpace(newValue);
+            return true;
+        } else if (preference == mUseZram) {
+            writeUseZramOptions(newValue);
+            return true;
+        } else if (preference == mUseKernel) {
+            writeUseKernelOptions(newValue);
             return true;
         }
         return false;
@@ -1625,4 +1755,27 @@ public class DevelopmentSettings extends SettingsPreferenceFragment
                     return keys;
                 }
             };
+    
+    /**
+     * Wrapper for nAOSProm control script
+     */
+    private String _naospromctl(String[] cmd) {
+
+        java.lang.Process p = null;
+        String value = "";
+        
+        try {
+            p = new java.lang.ProcessBuilder(cmd).redirectErrorStream(true).start();
+            BufferedReader br = new BufferedReader(new InputStreamReader(p.getInputStream()));
+            String line = "";
+            while ((line=br.readLine()) != null){
+                value = line;
+            }
+            p.destroy();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        
+        return value;
+    }
 }

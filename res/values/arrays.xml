@@ -1267,4 +1267,43 @@
         <item>Cached (activity client)</item>
         <item>Cached (empty)</item>
     </string-array>
+    
+    <!-- nAOSProm -->
+    <!-- Titles for zram preference. [CHAR LIMIT=35] -->
+    <string-array name="use_zram_entries">
+        <item>Disable</item>
+        <item>64 MiB</item>
+        <item>96 MiB</item>
+        <item>128 MiB</item>
+        <item>160 MiB</item>
+        <item>192 MiB</item>
+        <item>Other</item>
+    </string-array>
+
+    <!-- Values for zram preference. -->
+    <string-array name="use_zram_values" translatable="false" >
+        <item>0</item>
+        <item>67108864</item>
+        <item>100663296</item>
+        <item>134217728</item>
+        <item>167772160</item>
+        <item>201326592</item>
+        <item>-1</item>
+    </string-array>
+    
+    <!-- Titles for kernel preference. [CHAR LIMIT=35] -->
+    <string-array name="use_kernel_entries">
+        <item>Disable</item>
+        <item>1.73 Ghz (gpu: 320Mhz)</item>
+        <item>1.89 Ghz (gpu: 320Mhz)</item>
+        <item>Other</item>
+    </string-array>
+
+    <!-- Values for kernel preference. -->
+    <string-array name="use_kernel_values" translatable="false" >
+        <item>standard</item>
+        <item>oc</item>
+        <item>oc_ultra</item>
+        <item>-1</item>
+    </string-array>
 </resources>
