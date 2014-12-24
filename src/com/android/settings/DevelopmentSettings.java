@@ -173,6 +173,7 @@ public class DevelopmentSettings extends SettingsPreferenceFragment
     private static final String USE_ZRAM_KEY = "use_zram";
     private static final String USE_LIGHTBAR_KEY = "use_lightbar";
     private static final String USE_KERNEL_KEY = "use_kernel";
+    private static final String USE_HW_KEYS_LAYOUT_KEY = "use_hw_keys_layout";
 
     private IWindowManager mWindowManager;
     private IBackupManager mBackupManager;
@@ -242,6 +243,7 @@ public class DevelopmentSettings extends SettingsPreferenceFragment
     private ListPreference mUseZram;
     private CheckBoxPreference mUseLightbar;
     private ListPreference mUseKernel;
+    private ListPreference mUseHwKeysLayout;
 
     private PreferenceScreen mProcessStats;
     private final ArrayList<Preference> mAllPrefs = new ArrayList<Preference>();
@@ -384,6 +386,7 @@ public class DevelopmentSettings extends SettingsPreferenceFragment
         mUseZram = addListPreference(USE_ZRAM_KEY);
         mUseLightbar = findAndInitCheckboxPref(USE_LIGHTBAR_KEY);
         mUseKernel = addListPreference(USE_KERNEL_KEY);
+        mUseHwKeysLayout = addListPreference(USE_HW_KEYS_LAYOUT_KEY);
     }
 
     private ListPreference addListPreference(String prefKey) {
@@ -568,6 +571,7 @@ public class DevelopmentSettings extends SettingsPreferenceFragment
         updateUseZramOptions();
         updateUseLightbarOptions();
         updateUseKernelOptions();
+        updateUseHwKeysLayoutOptions();
     }
 
     private void resetDangerousOptions() {
@@ -1399,6 +1403,36 @@ public class DevelopmentSettings extends SettingsPreferenceFragment
         updateUseKernelOptions();
     }
     
+    private void updateUseHwKeysLayoutOptions() {
+        String value = _naospromctl(new String[]{"/system/bin/sh",
+                               "/system/xbin/naospromctl",
+                               "get",
+                               "hw-keys-layout"});
+    
+        CharSequence[] values = mUseHwKeysLayout.getEntryValues();
+        for (int i = 0; i < values.length; i++) {
+            if (value.contentEquals(values[i])) {
+                mUseHwKeysLayout.setValueIndex(i);
+                mUseHwKeysLayout.setSummary(mUseHwKeysLayout.getEntries()[i]);
+                return;
+            }
+        }
+        
+        //Default behaviour
+        mUseHwKeysLayout.setValueIndex(values.length - 1);
+        mUseHwKeysLayout.setSummary(mUseKernel.getEntries()[values.length - 1]);
+    }
+    
+    private void writeUseHwKeysLayoutOptions(Object newValue) {
+        _naospromctl(new String[]{"/system/bin/sh",
+                               "/system/xbin/naospromctl",
+                               "set",
+                               "hw-keys-layout",
+                               newValue.toString()});
+                               
+        updateUseHwKeysLayoutOptions();
+    }
+    
     @Override
     public void onSwitchChanged(Switch switchView, boolean isChecked) {
         if (switchView != mSwitchBar.getSwitch()) {
@@ -1596,6 +1630,9 @@ public class DevelopmentSettings extends SettingsPreferenceFragment
             return true;
         } else if (preference == mUseKernel) {
             writeUseKernelOptions(newValue);
+            return true;
+        } else if (preference == mUseHwKeysLayout) {
+            writeUseHwKeysLayoutOptions(newValue);
             return true;
         }
         return false;

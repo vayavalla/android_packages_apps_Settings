@@ -341,6 +341,13 @@
             android:entries="@array/use_kernel_entries"
             android:entryValues="@array/use_kernel_values" />
 
+        <ListPreference
+            android:key="use_hw_keys_layout"
+            android:title="@string/use_hw_keys_layout_title"
+            android:persistent="false"
+            android:entries="@array/use_hw_keys_layout_entries"
+            android:entryValues="@array/use_hw_keys_layout_values" />
+
      </PreferenceCategory>
 
 </PreferenceScreen>

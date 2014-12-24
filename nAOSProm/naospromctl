@@ -18,12 +18,14 @@ get:
   zram-size : display the zram disk size in octet
   lightbar-enable : is lightbar enable on boot ?
   kernel : kernel that will be flashed in the recovery
+  hw-keys-layout : hw keys layout
   
 set:
   zram-enable <true|false> : enable or not zram (reboot required)
   zram-size <value in octet> : set the disk size (reboot required)
   lightbar-enable <true|false> : enable or not lightbar below the screen (reboot required)
   kernel <standard|oc|oc_ultra> : kernel to use for the next flash of the rom
+  hw-keys-layout : layout to use (0 for 2.3, 1 for 4.4+)
 "
 
     exit 1
@@ -49,6 +51,9 @@ case "$SETGET" in
                 ;;
             "lightbar-enable")
                 /system/xbin/egrep '^sys.lightbar.enable=' $BUILD_PROP 2>/dev/null | /system/xbin/cut -d= -f2
+                ;;
+            "hw-keys-layout")
+                /system/xbin/egrep '^qemu.hw.mainkeys.layout=' $BUILD_PROP 2>/dev/null | /system/xbin/cut -d= -f2
                 ;;
             *)
                 help
@@ -93,6 +98,13 @@ case "$SETGET" in
                 echo "
                     [ $REMOUNT -eq 1 ] && mount -o remount,rw /system ;
                     sed -i \"s/^sys.lightbar.enable=.*/sys.lightbar.enable=$SETVAL/\" $BUILD_PROP ;
+                    [ $REMOUNT -eq 1 ] && mount -o remount,ro /system ;
+                    " | su
+                ;;
+            "hw-keys-layout")
+                echo "
+                    [ $REMOUNT -eq 1 ] && mount -o remount,rw /system ;
+                    sed -i \"s/^qemu.hw.mainkeys.layout=.*/qemu.hw.mainkeys.layout=$SETVAL/\" $BUILD_PROP ;
                     [ $REMOUNT -eq 1 ] && mount -o remount,ro /system ;
                     " | su
                 ;;
