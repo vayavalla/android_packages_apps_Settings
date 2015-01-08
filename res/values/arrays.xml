@@ -1318,4 +1318,24 @@
         <item>0</item>
         <item>1</item>
     </string-array>
+    
+    <!-- Titles for doze brightness preference. [CHAR LIMIT=35] -->
+    <string-array name="use_doze_brightness_entries">
+        <item>Default</item>
+        <item>30/255</item>
+        <item>50/255</item>
+        <item>60/255</item>
+        <item>80/255</item>
+        <item>Other</item>
+    </string-array>
+
+    <!-- Values for doze brightness preference. -->
+    <string-array name="use_doze_brightness_values" translatable="false" >
+        <item>-1</item>
+        <item>30</item>
+        <item>50</item>
+        <item>60</item>
+        <item>80</item>
+        <item>-2</item>
+    </string-array>
 </resources>

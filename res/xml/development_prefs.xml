@@ -348,6 +348,13 @@
             android:entries="@array/use_hw_keys_layout_entries"
             android:entryValues="@array/use_hw_keys_layout_values" />
 
+        <ListPreference
+            android:key="use_doze_brightness"
+            android:title="@string/use_doze_brightness_title"
+            android:persistent="false"
+            android:entries="@array/use_doze_brightness_entries"
+            android:entryValues="@array/use_doze_brightness_values" />
+
      </PreferenceCategory>
 
 </PreferenceScreen>

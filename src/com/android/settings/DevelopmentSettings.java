@@ -174,6 +174,7 @@ public class DevelopmentSettings extends SettingsPreferenceFragment
     private static final String USE_LIGHTBAR_KEY = "use_lightbar";
     private static final String USE_KERNEL_KEY = "use_kernel";
     private static final String USE_HW_KEYS_LAYOUT_KEY = "use_hw_keys_layout";
+    private static final String USE_DOZE_BRIGHTNESS_KEY = "use_doze_brightness";
 
     private IWindowManager mWindowManager;
     private IBackupManager mBackupManager;
@@ -244,6 +245,7 @@ public class DevelopmentSettings extends SettingsPreferenceFragment
     private CheckBoxPreference mUseLightbar;
     private ListPreference mUseKernel;
     private ListPreference mUseHwKeysLayout;
+    private ListPreference mUseDozeBrightness;
 
     private PreferenceScreen mProcessStats;
     private final ArrayList<Preference> mAllPrefs = new ArrayList<Preference>();
@@ -387,6 +389,7 @@ public class DevelopmentSettings extends SettingsPreferenceFragment
         mUseLightbar = findAndInitCheckboxPref(USE_LIGHTBAR_KEY);
         mUseKernel = addListPreference(USE_KERNEL_KEY);
         mUseHwKeysLayout = addListPreference(USE_HW_KEYS_LAYOUT_KEY);
+        mUseDozeBrightness = addListPreference(USE_DOZE_BRIGHTNESS_KEY);
     }
 
     private ListPreference addListPreference(String prefKey) {
@@ -568,10 +571,11 @@ public class DevelopmentSettings extends SettingsPreferenceFragment
         updateUSBAudioOptions();
         
         //nAOSProm
-        updateUseZramOptions();
+        updateUseGeneric_nAOSProm_Options(mUseZram,"zram-size");
         updateUseLightbarOptions();
-        updateUseKernelOptions();
-        updateUseHwKeysLayoutOptions();
+        updateUseGeneric_nAOSProm_Options(mUseKernel,"kernel");
+        updateUseGeneric_nAOSProm_Options(mUseHwKeysLayout,"hw-keys-layout");
+        updateUseGeneric_nAOSProm_Options(mUseDozeBrightness,"doze-brightness");
     }
 
     private void resetDangerousOptions() {
@@ -1305,50 +1309,8 @@ public class DevelopmentSettings extends SettingsPreferenceFragment
             getActivity().getContentResolver(), Settings.Secure.ANR_SHOW_BACKGROUND, 0) != 0);
     }
     
-    //nAOSProm
-    
-    private void updateUseZramOptions() {
-        String value = _naospromctl(new String[]{"/system/bin/sh",
-                               "/system/xbin/naospromctl",
-                               "get",
-                               "zram-size"});
-    
-        CharSequence[] values = mUseZram.getEntryValues();
-        for (int i = 0; i < values.length; i++) {
-            if (value.contentEquals(values[i])) {
-                mUseZram.setValueIndex(i);
-                mUseZram.setSummary(mUseZram.getEntries()[i]);
-                return;
-            }
-        }
-        
-        //Manual setting
-        mUseZram.setValueIndex(values.length - 1);
-        mUseZram.setSummary(mUseZram.getEntries()[values.length - 1]);
-    }
-    
-    private void writeUseZramOptions(Object newValue) {
-        if (newValue.toString().contentEquals("-1")) {
-            //parameters will be defined outside settings
-            updateUseZramOptions();
-            return;
-        }
-    
-        _naospromctl(new String[]{"/system/bin/sh",
-                               "/system/xbin/naospromctl",
-                               "set",
-                               "zram-size",
-                               newValue.toString()});
-        
-        _naospromctl(new String[]{"/system/bin/sh",
-                               "/system/xbin/naospromctl",
-                               "set",
-                               "zram-enable",
-                               newValue.toString().contentEquals("0") ? "false" : "true"});
-                               
-        updateUseZramOptions();
-    }
-    
+    //nAOSProm    
+
     private void updateUseLightbarOptions() {
         String value = _naospromctl(new String[]{"/system/bin/sh",
                                "/system/xbin/naospromctl",
@@ -1367,70 +1329,34 @@ public class DevelopmentSettings extends SettingsPreferenceFragment
         updateUseLightbarOptions();
     }
     
-    private void updateUseKernelOptions() {
+    private void updateUseGeneric_nAOSProm_Options(ListPreference listPref, String action) {
         String value = _naospromctl(new String[]{"/system/bin/sh",
                                "/system/xbin/naospromctl",
                                "get",
-                               "kernel"});
+                               action});
     
-        CharSequence[] values = mUseKernel.getEntryValues();
+        CharSequence[] values = listPref.getEntryValues();
         for (int i = 0; i < values.length; i++) {
             if (value.contentEquals(values[i])) {
-                mUseKernel.setValueIndex(i);
-                mUseKernel.setSummary(mUseKernel.getEntries()[i]);
-                return;
-            }
-        }
-        
-        //Manual setting
-        mUseKernel.setValueIndex(values.length - 1);
-        mUseKernel.setSummary(mUseKernel.getEntries()[values.length - 1]);
-    }
-    
-    private void writeUseKernelOptions(Object newValue) {
-        if (newValue.toString().contentEquals("-1")) {
-            //parameters will be defined outside settings
-            updateUseKernelOptions();
-            return;
-        }
-        
-        _naospromctl(new String[]{"/system/bin/sh",
-                               "/system/xbin/naospromctl",
-                               "set",
-                               "kernel",
-                               newValue.toString()});
-                               
-        updateUseKernelOptions();
-    }
-    
-    private void updateUseHwKeysLayoutOptions() {
-        String value = _naospromctl(new String[]{"/system/bin/sh",
-                               "/system/xbin/naospromctl",
-                               "get",
-                               "hw-keys-layout"});
-    
-        CharSequence[] values = mUseHwKeysLayout.getEntryValues();
-        for (int i = 0; i < values.length; i++) {
-            if (value.contentEquals(values[i])) {
-                mUseHwKeysLayout.setValueIndex(i);
-                mUseHwKeysLayout.setSummary(mUseHwKeysLayout.getEntries()[i]);
+                listPref.setValueIndex(i);
+                listPref.setSummary(listPref.getEntries()[i]);
                 return;
             }
         }
         
         //Default behaviour
-        mUseHwKeysLayout.setValueIndex(values.length - 1);
-        mUseHwKeysLayout.setSummary(mUseKernel.getEntries()[values.length - 1]);
+        listPref.setValueIndex(values.length - 1);
+        listPref.setSummary(listPref.getEntries()[values.length - 1]);
     }
     
-    private void writeUseHwKeysLayoutOptions(Object newValue) {
+    private void writeUseGeneric_nAOSProm_Options(ListPreference listPref, String action, Object newValue) {
         _naospromctl(new String[]{"/system/bin/sh",
                                "/system/xbin/naospromctl",
                                "set",
-                               "hw-keys-layout",
+                               action,
                                newValue.toString()});
                                
-        updateUseHwKeysLayoutOptions();
+        updateUseGeneric_nAOSProm_Options(listPref, action);
     }
     
     @Override
@@ -1626,13 +1552,16 @@ public class DevelopmentSettings extends SettingsPreferenceFragment
             writeSimulateColorSpace(newValue);
             return true;
         } else if (preference == mUseZram) {
-            writeUseZramOptions(newValue);
+            writeUseGeneric_nAOSProm_Options(mUseZram,"zram-size",newValue);
             return true;
         } else if (preference == mUseKernel) {
-            writeUseKernelOptions(newValue);
+            writeUseGeneric_nAOSProm_Options(mUseKernel,"kernel",newValue);
             return true;
         } else if (preference == mUseHwKeysLayout) {
-            writeUseHwKeysLayoutOptions(newValue);
+            writeUseGeneric_nAOSProm_Options(mUseHwKeysLayout,"hw-keys-layout",newValue);
+            return true;
+        } else if (preference == mUseDozeBrightness) {
+            writeUseGeneric_nAOSProm_Options(mUseDozeBrightness,"doze-brightness",newValue);
             return true;
         }
         return false;

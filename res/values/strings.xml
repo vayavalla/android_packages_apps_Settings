@@ -6000,4 +6000,7 @@
    <!-- UI debug setting: hw keys layout [CHAR LIMIT=25] -->
    <string name="use_hw_keys_layout_title">Physical Keys Layout (*)</string>
    
+   <!-- UI debug setting: doze brightness [CHAR LIMIT=25] -->
+   <string name="use_doze_brightness_title">Brightness during Doze (*)</string>
+   
 </resources>

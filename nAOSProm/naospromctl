@@ -14,18 +14,18 @@ naospromctl usage:
 naosprom <get|set> <prop> [<value to set>]
 
 get:
-  zram-enable : is zram enable on boot ?
-  zram-size : display the zram disk size in octet
+  zram-size : display the zram disk size in octet (0 if disabled)
   lightbar-enable : is lightbar enable on boot ?
   kernel : kernel that will be flashed in the recovery
   hw-keys-layout : hw keys layout
+  doze-brightness : brightness level for doze
   
 set:
-  zram-enable <true|false> : enable or not zram (reboot required)
-  zram-size <value in octet> : set the disk size (reboot required)
-  lightbar-enable <true|false> : enable or not lightbar below the screen (reboot required)
+  zram-size <value in octet> : set the disk size (set 0 to disable zram)
+  lightbar-enable <true|false> : enable or not lightbar below the screen
   kernel <standard|oc|oc_ultra> : kernel to use for the next flash of the rom
   hw-keys-layout : layout to use (0 for 2.3, 1 for 4.4+)
+  doze-brightness <brightness> : set the brightness for doze (-1 to use the default configuration)
 "
 
     exit 1
@@ -38,9 +38,6 @@ case "$SETGET" in
     "get")
 
         case "$CMD" in
-            "zram-enable")
-                /system/xbin/egrep '^sys.zram.enable=' $BUILD_PROP 2>/dev/null | /system/xbin/cut -d= -f2
-                ;;
             "zram-size")
                 /system/xbin/egrep '^sys.zram.size=' $BUILD_PROP 2>/dev/null | /system/xbin/cut -d= -f2
                 ;;
@@ -54,6 +51,9 @@ case "$SETGET" in
                 ;;
             "hw-keys-layout")
                 /system/xbin/egrep '^qemu.hw.mainkeys.layout=' $BUILD_PROP 2>/dev/null | /system/xbin/cut -d= -f2
+                ;;
+            "doze-brightness")
+                /system/xbin/egrep '^sys.screen.doze.brightness=' $BUILD_PROP 2>/dev/null | /system/xbin/cut -d= -f2
                 ;;
             *)
                 help
@@ -72,6 +72,7 @@ case "$SETGET" in
         
         case "$CMD" in
             "kernel")
+                [ "$SETVAL" == "-1" ] && exit 0
                 echo "
                     if ( egrep -q '^kernel=' $KERNEL_PROP 2>/dev/null ); then
                         sed -i \"s/^kernel=.*/kernel=$SETVAL/\" $KERNEL_PROP
@@ -81,16 +82,17 @@ case "$SETGET" in
                     " | su
                 ;;
             "zram-size")
+                [ "$SETVAL" == "-1" ] && exit 0
+                if [ "$SETVAL" == "0" ]; then
+                    ZRAMSTATE=false
+                else
+                    ZRAMSTATE=true
+                fi
+
                 echo "
                     [ $REMOUNT -eq 1 ] && mount -o remount,rw /system ;
+                    sed -i \"s/^sys.zram.enable=.*/sys.zram.enable=$ZRAMSTATE/\" $BUILD_PROP ;
                     sed -i \"s/^sys.zram.size=.*/sys.zram.size=$SETVAL/\" $BUILD_PROP ;
-                    [ $REMOUNT -eq 1 ] && mount -o remount,ro /system ;
-                    " | su
-                ;;
-            "zram-enable")
-                echo "
-                    [ $REMOUNT -eq 1 ] && mount -o remount,rw /system ;
-                    sed -i \"s/^sys.zram.enable=.*/sys.zram.enable=$SETVAL/\" $BUILD_PROP ;
                     [ $REMOUNT -eq 1 ] && mount -o remount,ro /system ;
                     " | su
                 ;;
@@ -105,6 +107,14 @@ case "$SETGET" in
                 echo "
                     [ $REMOUNT -eq 1 ] && mount -o remount,rw /system ;
                     sed -i \"s/^qemu.hw.mainkeys.layout=.*/qemu.hw.mainkeys.layout=$SETVAL/\" $BUILD_PROP ;
+                    [ $REMOUNT -eq 1 ] && mount -o remount,ro /system ;
+                    " | su
+                ;;
+            "doze-brightness")
+                [ "$SETVAL" == "-2" ] && exit 0
+                echo "
+                    [ $REMOUNT -eq 1 ] && mount -o remount,rw /system ;
+                    sed -i \"s/^sys.screen.doze.brightness=.*/sys.screen.doze.brightness=$SETVAL/\" $BUILD_PROP ;
                     [ $REMOUNT -eq 1 ] && mount -o remount,ro /system ;
                     " | su
                 ;;
