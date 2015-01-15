@@ -329,6 +329,13 @@
             android:entries="@array/use_zram_entries"
             android:entryValues="@array/use_zram_values" />
 
+        <ListPreference
+            android:key="use_minfree"
+            android:title="@string/use_minfree_title"
+            android:persistent="false"
+            android:entries="@array/use_minfree_entries"
+            android:entryValues="@array/use_minfree_values" />
+
         <CheckBoxPreference
             android:key="use_lightbar"
             android:title="@string/use_lightbar_title"

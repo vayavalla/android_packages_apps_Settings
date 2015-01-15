@@ -19,6 +19,7 @@ get:
   kernel : kernel that will be flashed in the recovery
   hw-keys-layout : hw keys layout
   doze-brightness : brightness level for doze
+  minfree : absolute min free for android low memory killer
   
 set:
   zram-size <value in octet> : set the disk size (set 0 to disable zram)
@@ -26,6 +27,7 @@ set:
   kernel <standard|oc|oc_ultra> : kernel to use for the next flash of the rom
   hw-keys-layout : layout to use (0 for 2.3, 1 for 4.4+)
   doze-brightness <brightness> : set the brightness for doze (-1 to use the default configuration)
+  minfree <value in KiB> : absolute min free for android low memory killer
 "
 
     exit 1
@@ -54,6 +56,9 @@ case "$SETGET" in
                 ;;
             "doze-brightness")
                 /system/xbin/egrep '^sys.screen.doze.brightness=' $BUILD_PROP 2>/dev/null | /system/xbin/cut -d= -f2
+                ;;
+            "minfree")
+                /system/xbin/egrep '^sys.ram.minfree=' $BUILD_PROP 2>/dev/null | /system/xbin/cut -d= -f2
                 ;;
             *)
                 help
@@ -115,6 +120,14 @@ case "$SETGET" in
                 echo "
                     [ $REMOUNT -eq 1 ] && mount -o remount,rw /system ;
                     sed -i \"s/^sys.screen.doze.brightness=.*/sys.screen.doze.brightness=$SETVAL/\" $BUILD_PROP ;
+                    [ $REMOUNT -eq 1 ] && mount -o remount,ro /system ;
+                    " | su
+                ;;
+            "minfree")
+                [ "$SETVAL" == "-2" ] && exit 0
+                echo "
+                    [ $REMOUNT -eq 1 ] && mount -o remount,rw /system ;
+                    sed -i \"s/^sys.ram.minfree=.*/sys.ram.minfree=$SETVAL/\" $BUILD_PROP ;
                     [ $REMOUNT -eq 1 ] && mount -o remount,ro /system ;
                     " | su
                 ;;

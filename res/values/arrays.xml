@@ -1272,22 +1272,26 @@
     <!-- Titles for zram preference. [CHAR LIMIT=35] -->
     <string-array name="use_zram_entries">
         <item>Disable</item>
-        <item>64 MiB</item>
         <item>96 MiB</item>
         <item>128 MiB</item>
         <item>160 MiB</item>
         <item>192 MiB</item>
+        <item>224 MiB</item>
+        <item>256 MiB</item>
+        <item>288 MiB</item>
         <item>Other</item>
     </string-array>
 
     <!-- Values for zram preference. -->
     <string-array name="use_zram_values" translatable="false" >
         <item>0</item>
-        <item>67108864</item>
         <item>100663296</item>
         <item>134217728</item>
         <item>167772160</item>
         <item>201326592</item>
+        <item>234881024</item>
+        <item>268435456</item>
+        <item>301989888</item>
         <item>-1</item>
     </string-array>
     
@@ -1336,6 +1340,32 @@
         <item>50</item>
         <item>60</item>
         <item>80</item>
+        <item>-2</item>
+    </string-array>
+    
+    <!-- Titles for minfree preference. [CHAR LIMIT=35] -->
+    <string-array name="use_minfree_entries">
+        <item>Automatic</item>
+        <item>75 MiB</item>
+        <item>90 MiB</item>
+        <item>105 MiB</item>
+        <item>120 MiB</item>
+        <item>135 MiB</item>
+        <item>150 MiB</item>
+        <item>165 MiB</item>
+        <item>Other</item>
+    </string-array>
+
+    <!-- Values for minfree preference. -->
+    <string-array name="use_minfree_values" translatable="false" >
+        <item>-1</item>
+        <item>76800</item>
+        <item>92160</item>
+        <item>107520</item>
+        <item>122880</item>
+        <item>138240</item>
+        <item>153600</item>
+        <item>168960</item>
         <item>-2</item>
     </string-array>
 </resources>

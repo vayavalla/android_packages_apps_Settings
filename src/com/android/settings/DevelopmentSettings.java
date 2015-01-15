@@ -175,6 +175,7 @@ public class DevelopmentSettings extends SettingsPreferenceFragment
     private static final String USE_KERNEL_KEY = "use_kernel";
     private static final String USE_HW_KEYS_LAYOUT_KEY = "use_hw_keys_layout";
     private static final String USE_DOZE_BRIGHTNESS_KEY = "use_doze_brightness";
+    private static final String USE_MINFREE_KEY = "use_minfree";
 
     private IWindowManager mWindowManager;
     private IBackupManager mBackupManager;
@@ -246,6 +247,7 @@ public class DevelopmentSettings extends SettingsPreferenceFragment
     private ListPreference mUseKernel;
     private ListPreference mUseHwKeysLayout;
     private ListPreference mUseDozeBrightness;
+    private ListPreference mUseMinFree;
 
     private PreferenceScreen mProcessStats;
     private final ArrayList<Preference> mAllPrefs = new ArrayList<Preference>();
@@ -390,6 +392,7 @@ public class DevelopmentSettings extends SettingsPreferenceFragment
         mUseKernel = addListPreference(USE_KERNEL_KEY);
         mUseHwKeysLayout = addListPreference(USE_HW_KEYS_LAYOUT_KEY);
         mUseDozeBrightness = addListPreference(USE_DOZE_BRIGHTNESS_KEY);
+        mUseMinFree = addListPreference(USE_MINFREE_KEY);
     }
 
     private ListPreference addListPreference(String prefKey) {
@@ -576,6 +579,7 @@ public class DevelopmentSettings extends SettingsPreferenceFragment
         updateUseGeneric_nAOSProm_Options(mUseKernel,"kernel");
         updateUseGeneric_nAOSProm_Options(mUseHwKeysLayout,"hw-keys-layout");
         updateUseGeneric_nAOSProm_Options(mUseDozeBrightness,"doze-brightness");
+        updateUseGeneric_nAOSProm_Options(mUseMinFree,"minfree");
     }
 
     private void resetDangerousOptions() {
@@ -1562,6 +1566,9 @@ public class DevelopmentSettings extends SettingsPreferenceFragment
             return true;
         } else if (preference == mUseDozeBrightness) {
             writeUseGeneric_nAOSProm_Options(mUseDozeBrightness,"doze-brightness",newValue);
+            return true;
+        } else if (preference == mUseMinFree) {
+            writeUseGeneric_nAOSProm_Options(mUseMinFree,"minfree",newValue);
             return true;
         }
         return false;

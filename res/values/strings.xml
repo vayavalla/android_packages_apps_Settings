@@ -6002,5 +6002,7 @@
    
    <!-- UI debug setting: doze brightness [CHAR LIMIT=25] -->
    <string name="use_doze_brightness_title">Brightness during Doze (*)</string>
-   
+
+   <!-- UI debug setting: minfree [CHAR LIMIT=25] -->
+   <string name="use_minfree_title">Low memory killer (*)</string>
 </resources>
