@@ -1299,7 +1299,7 @@
     <string-array name="use_kernel_entries">
         <item>Disable</item>
         <item>1.73 Ghz (gpu: 320Mhz)</item>
-        <item>1.89 Ghz (gpu: 320Mhz)</item>
+        <item>1.83 Ghz (gpu: 320Mhz)</item>
         <item>Other</item>
     </string-array>
 
