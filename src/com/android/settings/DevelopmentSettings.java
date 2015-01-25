@@ -243,7 +243,7 @@ public class DevelopmentSettings extends SettingsPreferenceFragment
     
     //nAOSProm
     private ListPreference mUseZram;
-    private CheckBoxPreference mUseLightbar;
+    private ListPreference mUseLightbar;
     private ListPreference mUseKernel;
     private ListPreference mUseHwKeysLayout;
     private ListPreference mUseDozeBrightness;
@@ -388,7 +388,7 @@ public class DevelopmentSettings extends SettingsPreferenceFragment
         
         //nAOSProm
         mUseZram = addListPreference(USE_ZRAM_KEY);
-        mUseLightbar = findAndInitCheckboxPref(USE_LIGHTBAR_KEY);
+        mUseLightbar = addListPreference(USE_LIGHTBAR_KEY);
         mUseKernel = addListPreference(USE_KERNEL_KEY);
         mUseHwKeysLayout = addListPreference(USE_HW_KEYS_LAYOUT_KEY);
         mUseDozeBrightness = addListPreference(USE_DOZE_BRIGHTNESS_KEY);
@@ -575,7 +575,7 @@ public class DevelopmentSettings extends SettingsPreferenceFragment
         
         //nAOSProm
         updateUseGeneric_nAOSProm_Options(mUseZram,"zram-size");
-        updateUseLightbarOptions();
+        updateUseGeneric_nAOSProm_Options(mUseLightbar,"lightbar-mode");
         updateUseGeneric_nAOSProm_Options(mUseKernel,"kernel");
         updateUseGeneric_nAOSProm_Options(mUseHwKeysLayout,"hw-keys-layout");
         updateUseGeneric_nAOSProm_Options(mUseDozeBrightness,"doze-brightness");
@@ -1315,24 +1315,6 @@ public class DevelopmentSettings extends SettingsPreferenceFragment
     
     //nAOSProm    
 
-    private void updateUseLightbarOptions() {
-        String value = _naospromctl(new String[]{"/system/bin/sh",
-                               "/system/xbin/naospromctl",
-                               "get",
-                               "lightbar-enable"});
-        updateCheckBox(mUseLightbar, !value.contentEquals("false"));
-    }
-    
-    private void writeUseLightbarOptions() {
-        _naospromctl(new String[]{"/system/bin/sh",
-                               "/system/xbin/naospromctl",
-                               "set",
-                               "lightbar-enable",
-                               mUseLightbar.isChecked() ? "true" : "false"});
-                               
-        updateUseLightbarOptions();
-    }
-    
     private void updateUseGeneric_nAOSProm_Options(ListPreference listPref, String action) {
         String value = _naospromctl(new String[]{"/system/bin/sh",
                                "/system/xbin/naospromctl",
@@ -1506,8 +1488,6 @@ public class DevelopmentSettings extends SettingsPreferenceFragment
             writeUseNuplayerOptions();
         } else if (preference == mUSBAudio) {
             writeUSBAudioOptions();
-        } else if (preference == mUseLightbar) {
-            writeUseLightbarOptions();
         } else {
             return super.onPreferenceTreeClick(preferenceScreen, preference);
         }
@@ -1557,6 +1537,9 @@ public class DevelopmentSettings extends SettingsPreferenceFragment
             return true;
         } else if (preference == mUseZram) {
             writeUseGeneric_nAOSProm_Options(mUseZram,"zram-size",newValue);
+            return true;
+        } else if (preference == mUseLightbar) {
+            writeUseGeneric_nAOSProm_Options(mUseLightbar,"lightbar-mode",newValue);
             return true;
         } else if (preference == mUseKernel) {
             writeUseGeneric_nAOSProm_Options(mUseKernel,"kernel",newValue);

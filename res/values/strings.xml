@@ -5990,9 +5990,7 @@
    <string name="use_zram_title">Swap/zram (*)</string>
 
    <!-- UI debug setting: lightbar [CHAR LIMIT=25] -->
-   <string name="use_lightbar_title">Use light bar (*)</string>
-   <!-- UI debug setting: lightbar summary [CHAR LIMIT=50] -->
-   <string name="use_lightbar_summary">Controls lighting of the light bar</string>
+   <string name="use_lightbar_title">Light bar (*)</string>
    
    <!-- UI debug setting: kernel [CHAR LIMIT=25] -->
    <string name="use_kernel_title">Overclocking (**)</string>

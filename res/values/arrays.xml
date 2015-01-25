@@ -1294,6 +1294,20 @@
         <item>301989888</item>
         <item>-1</item>
     </string-array>
+
+    <!-- Titles for lightbar preference. [CHAR LIMIT=35] -->
+    <string-array name="use_lightbar_entries">
+        <item>Always off</item>
+        <item>On with timeout</item>
+        <item>On/Off with the screen</item>
+    </string-array>
+
+    <!-- Values for lightbar preference. -->
+    <string-array name="use_lightbar_values" translatable="false" >
+        <item>0</item>
+        <item>1</item>
+        <item>2</item>
+    </string-array>
     
     <!-- Titles for kernel preference. [CHAR LIMIT=35] -->
     <string-array name="use_kernel_entries">

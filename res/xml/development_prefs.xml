@@ -336,10 +336,12 @@
             android:entries="@array/use_minfree_entries"
             android:entryValues="@array/use_minfree_values" />
 
-        <CheckBoxPreference
+        <ListPreference
             android:key="use_lightbar"
             android:title="@string/use_lightbar_title"
-            android:summary="@string/use_lightbar_summary"/>
+            android:persistent="false"
+            android:entries="@array/use_lightbar_entries"
+            android:entryValues="@array/use_lightbar_values" />
 
         <ListPreference
             android:key="use_kernel"

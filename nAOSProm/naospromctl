@@ -15,7 +15,7 @@ naosprom <get|set> <prop> [<value to set>]
 
 get:
   zram-size : display the zram disk size in octet (0 if disabled)
-  lightbar-enable : is lightbar enable on boot ?
+  lightbar-mode : lightbar mode
   kernel : kernel that will be flashed in the recovery
   hw-keys-layout : hw keys layout
   doze-brightness : brightness level for doze
@@ -23,7 +23,7 @@ get:
   
 set:
   zram-size <value in octet> : set the disk size (set 0 to disable zram)
-  lightbar-enable <true|false> : enable or not lightbar below the screen
+  lightbar-mode <0|1|2> : 0 to disable lightbar, 1 for lightbar with timeout and 2 for lightbar on/off with screen
   kernel <standard|oc|oc_ultra> : kernel to use for the next flash of the rom
   hw-keys-layout : layout to use (0 for 2.3, 1 for 4.4+)
   doze-brightness <brightness> : set the brightness for doze (-1 to use the default configuration)
@@ -48,8 +48,8 @@ case "$SETGET" in
                     (/system/xbin/egrep '^kernel=' $KERNEL_PROP 2>/dev/null || echo \"kernel=standard\") | /system/xbin/cut -d= -f2
                     " | su
                 ;;
-            "lightbar-enable")
-                /system/xbin/egrep '^sys.lightbar.enable=' $BUILD_PROP 2>/dev/null | /system/xbin/cut -d= -f2
+            "lightbar-mode")
+                /system/xbin/egrep '^sys.lightbar.mode=' $BUILD_PROP 2>/dev/null | /system/xbin/cut -d= -f2
                 ;;
             "hw-keys-layout")
                 /system/xbin/egrep '^qemu.hw.mainkeys.layout=' $BUILD_PROP 2>/dev/null | /system/xbin/cut -d= -f2
@@ -101,10 +101,10 @@ case "$SETGET" in
                     [ $REMOUNT -eq 1 ] && mount -o remount,ro /system ;
                     " | su
                 ;;
-            "lightbar-enable")
+            "lightbar-mode")
                 echo "
                     [ $REMOUNT -eq 1 ] && mount -o remount,rw /system ;
-                    sed -i \"s/^sys.lightbar.enable=.*/sys.lightbar.enable=$SETVAL/\" $BUILD_PROP ;
+                    sed -i \"s/^sys.lightbar.mode=.*/sys.lightbar.mode=$SETVAL/\" $BUILD_PROP ;
                     [ $REMOUNT -eq 1 ] && mount -o remount,ro /system ;
                     " | su
                 ;;
