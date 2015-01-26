@@ -6,6 +6,7 @@ SETVAL=$3
 
 KERNEL_PROP=/sdcard/.nAOSProm.prop
 BUILD_PROP=/system/build.prop
+HW_CONFIG=/system/etc/hw_config.sh
 
 help() {
     echo "
@@ -18,16 +19,22 @@ get:
   lightbar-mode : lightbar mode
   kernel : kernel that will be flashed in the recovery
   hw-keys-layout : hw keys layout
+  hw-keys-music : hw keys for music
   doze-brightness : brightness level for doze
   minfree : absolute min free for android low memory killer
+  dt2w : double tap to wake
+  shake2w : shake to wake
   
 set:
   zram-size <value in octet> : set the disk size (set 0 to disable zram)
   lightbar-mode <0|1|2> : 0 to disable lightbar, 1 for lightbar with timeout and 2 for lightbar on/off with screen
   kernel <standard|oc|oc_ultra> : kernel to use for the next flash of the rom
-  hw-keys-layout : layout to use (0 for 2.3, 1 for 4.4+)
+  hw-keys-layout <0|1> : layout to use (0 for 2.3, 1 for 4.4+)
+  hw-keys-music <0|1>: music controls (0 for disable, 1 for enable)
   doze-brightness <brightness> : set the brightness for doze (-1 to use the default configuration)
   minfree <value in KiB> : absolute min free for android low memory killer
+  dt2w <true|false>: double tap to wake
+  shake2w <true|false>: shake to wake
 "
 
     exit 1
@@ -54,11 +61,20 @@ case "$SETGET" in
             "hw-keys-layout")
                 /system/xbin/egrep '^qemu.hw.mainkeys.layout=' $BUILD_PROP 2>/dev/null | /system/xbin/cut -d= -f2
                 ;;
+            "hw-keys-music")
+                /system/xbin/egrep '^qemu.hw.mainkeys.music=' $BUILD_PROP 2>/dev/null | /system/xbin/cut -d= -f2 | sed 's/1/true/;s/0/false/'
+                ;;
             "doze-brightness")
                 /system/xbin/egrep '^sys.screen.doze.brightness=' $BUILD_PROP 2>/dev/null | /system/xbin/cut -d= -f2
                 ;;
             "minfree")
                 /system/xbin/egrep '^sys.ram.minfree=' $BUILD_PROP 2>/dev/null | /system/xbin/cut -d= -f2
+                ;;
+            "dt2w")
+                /system/xbin/egrep -q '^echo.*1.*>.*/sys/class/input/input3/wakeup' $HW_CONFIG && echo "true" || echo "false"
+                ;;
+            "shake2w")
+                /system/xbin/egrep -q '^echo.*>.*dev/tap_mode' $HW_CONFIG && echo "true" || echo "false"
                 ;;
             *)
                 help
@@ -115,6 +131,18 @@ case "$SETGET" in
                     [ $REMOUNT -eq 1 ] && mount -o remount,ro /system ;
                     " | su
                 ;;
+            "hw-keys-music")
+                if [ "$SETVAL" == "true" ]; then
+                    SETVAL=1
+                else
+                    SETVAL=0
+                fi
+                echo "
+                    [ $REMOUNT -eq 1 ] && mount -o remount,rw /system ;
+                    sed -i \"s/^qemu.hw.mainkeys.music=.*/qemu.hw.mainkeys.music=$SETVAL/\" $BUILD_PROP ;
+                    [ $REMOUNT -eq 1 ] && mount -o remount,ro /system ;
+                    " | su
+                ;;
             "doze-brightness")
                 [ "$SETVAL" == "-2" ] && exit 0
                 echo "
@@ -130,6 +158,36 @@ case "$SETGET" in
                     sed -i \"s/^sys.ram.minfree=.*/sys.ram.minfree=$SETVAL/\" $BUILD_PROP ;
                     [ $REMOUNT -eq 1 ] && mount -o remount,ro /system ;
                     " | su
+                ;;
+            "dt2w")
+                if [ "$SETVAL" == "true" ]; then
+                    echo "
+                        [ $REMOUNT -eq 1 ] && mount -o remount,rw /system ;
+                        sed -i 's|^#echo.*>.*/sys/class/input/input3/wakeup|echo 1 > /sys/class/input/input3/wakeup|' $HW_CONFIG ;
+                        [ $REMOUNT -eq 1 ] && mount -o remount,ro /system ;
+                        " | su
+                else
+                    echo "
+                        [ $REMOUNT -eq 1 ] && mount -o remount,rw /system ;
+                        sed -i 's|^echo.*1.*>.*/sys/class/input/input3/wakeup|#echo 1 > /sys/class/input/input3/wakeup|' $HW_CONFIG ;
+                        [ $REMOUNT -eq 1 ] && mount -o remount,ro /system ;
+                        " | su
+                fi
+                ;;
+            "shake2w")
+                if [ "$SETVAL" == "true" ]; then
+                    echo "
+                        [ $REMOUNT -eq 1 ] && mount -o remount,rw /system ;
+                        sed -i 's|^#echo\(.*\)>.*dev/tap_mode|echo\1> $dev/tap_mode|' $HW_CONFIG ;
+                        [ $REMOUNT -eq 1 ] && mount -o remount,ro /system ;
+                        " | su
+                else
+                    echo "
+                        [ $REMOUNT -eq 1 ] && mount -o remount,rw /system ;
+                        sed -i 's|^echo\(.*\)>.*dev/tap_mode|#echo\1> $dev/tap_mode|' $HW_CONFIG ;
+                        [ $REMOUNT -eq 1 ] && mount -o remount,ro /system ;
+                        " | su
+                fi
                 ;;
             *)                                                                                                               
                 help                                                                                                         

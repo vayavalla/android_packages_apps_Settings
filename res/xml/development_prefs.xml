@@ -357,12 +357,27 @@
             android:entries="@array/use_hw_keys_layout_entries"
             android:entryValues="@array/use_hw_keys_layout_values" />
 
+        <CheckBoxPreference
+            android:key="use_hw_keys_music"
+            android:title="@string/use_hw_keys_music_title"
+            android:summary="@string/use_hw_keys_music_summary"/>
+
         <ListPreference
             android:key="use_doze_brightness"
             android:title="@string/use_doze_brightness_title"
             android:persistent="false"
             android:entries="@array/use_doze_brightness_entries"
             android:entryValues="@array/use_doze_brightness_values" />
+
+        <CheckBoxPreference
+            android:key="use_dt2w"
+            android:title="@string/use_dt2w_title"
+            android:summary="@string/use_dt2w_summary"/>
+
+        <CheckBoxPreference
+            android:key="use_shake2w"
+            android:title="@string/use_shake2w_title"
+            android:summary="@string/use_shake2w_summary"/>
 
      </PreferenceCategory>
 

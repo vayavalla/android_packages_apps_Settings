@@ -174,8 +174,11 @@ public class DevelopmentSettings extends SettingsPreferenceFragment
     private static final String USE_LIGHTBAR_KEY = "use_lightbar";
     private static final String USE_KERNEL_KEY = "use_kernel";
     private static final String USE_HW_KEYS_LAYOUT_KEY = "use_hw_keys_layout";
+    private static final String USE_HW_KEYS_MUSIC_KEY = "use_hw_keys_music";
     private static final String USE_DOZE_BRIGHTNESS_KEY = "use_doze_brightness";
     private static final String USE_MINFREE_KEY = "use_minfree";
+    private static final String USE_DT2W_KEY = "use_dt2w";
+    private static final String USE_SHAKE2W_KEY = "use_shake2w";
 
     private IWindowManager mWindowManager;
     private IBackupManager mBackupManager;
@@ -246,8 +249,11 @@ public class DevelopmentSettings extends SettingsPreferenceFragment
     private ListPreference mUseLightbar;
     private ListPreference mUseKernel;
     private ListPreference mUseHwKeysLayout;
+    private CheckBoxPreference mUseHwKeysMusic;
     private ListPreference mUseDozeBrightness;
     private ListPreference mUseMinFree;
+    private CheckBoxPreference mUseDt2w;
+    private CheckBoxPreference mUseShake2w;
 
     private PreferenceScreen mProcessStats;
     private final ArrayList<Preference> mAllPrefs = new ArrayList<Preference>();
@@ -391,8 +397,11 @@ public class DevelopmentSettings extends SettingsPreferenceFragment
         mUseLightbar = addListPreference(USE_LIGHTBAR_KEY);
         mUseKernel = addListPreference(USE_KERNEL_KEY);
         mUseHwKeysLayout = addListPreference(USE_HW_KEYS_LAYOUT_KEY);
+        mUseHwKeysMusic = findAndInitCheckboxPref(USE_HW_KEYS_MUSIC_KEY);
         mUseDozeBrightness = addListPreference(USE_DOZE_BRIGHTNESS_KEY);
         mUseMinFree = addListPreference(USE_MINFREE_KEY);
+        mUseDt2w = findAndInitCheckboxPref(USE_DT2W_KEY);
+        mUseShake2w = findAndInitCheckboxPref(USE_SHAKE2W_KEY);
     }
 
     private ListPreference addListPreference(String prefKey) {
@@ -578,8 +587,11 @@ public class DevelopmentSettings extends SettingsPreferenceFragment
         updateUseGeneric_nAOSProm_Options(mUseLightbar,"lightbar-mode");
         updateUseGeneric_nAOSProm_Options(mUseKernel,"kernel");
         updateUseGeneric_nAOSProm_Options(mUseHwKeysLayout,"hw-keys-layout");
+        updateUseCheckGeneric_nAOSProm_Options(mUseHwKeysMusic,"hw-keys-music");
         updateUseGeneric_nAOSProm_Options(mUseDozeBrightness,"doze-brightness");
         updateUseGeneric_nAOSProm_Options(mUseMinFree,"minfree");
+        updateUseCheckGeneric_nAOSProm_Options(mUseDt2w,"dt2w");
+        updateUseCheckGeneric_nAOSProm_Options(mUseShake2w,"shake2w");
     }
 
     private void resetDangerousOptions() {
@@ -1345,6 +1357,25 @@ public class DevelopmentSettings extends SettingsPreferenceFragment
         updateUseGeneric_nAOSProm_Options(listPref, action);
     }
     
+    private void updateUseCheckGeneric_nAOSProm_Options(CheckBoxPreference checkPref, String action) {
+        String value = _naospromctl(new String[]{"/system/bin/sh",
+                               "/system/xbin/naospromctl",
+                               "get",
+                               action});
+    
+        updateCheckBox(checkPref, !value.contentEquals("false"));
+    }
+    
+    private void writeUseCheckGeneric_nAOSProm_Options(CheckBoxPreference checkPref, String action) {
+        _naospromctl(new String[]{"/system/bin/sh",
+                               "/system/xbin/naospromctl",
+                               "set",
+                               action,
+                               checkPref.isChecked() ? "true" : "false"});
+                               
+        updateUseCheckGeneric_nAOSProm_Options(checkPref, action);
+    }
+    
     @Override
     public void onSwitchChanged(Switch switchView, boolean isChecked) {
         if (switchView != mSwitchBar.getSwitch()) {
@@ -1488,6 +1519,12 @@ public class DevelopmentSettings extends SettingsPreferenceFragment
             writeUseNuplayerOptions();
         } else if (preference == mUSBAudio) {
             writeUSBAudioOptions();
+        } else if (preference == mUseHwKeysMusic) {
+            writeUseCheckGeneric_nAOSProm_Options(mUseHwKeysMusic,"hw-keys-music");
+        } else if (preference == mUseDt2w) {
+            writeUseCheckGeneric_nAOSProm_Options(mUseDt2w,"dt2w");
+        } else if (preference == mUseShake2w) {
+            writeUseCheckGeneric_nAOSProm_Options(mUseShake2w,"shake2w");
         } else {
             return super.onPreferenceTreeClick(preferenceScreen, preference);
         }
