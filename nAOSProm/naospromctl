@@ -178,13 +178,13 @@ case "$SETGET" in
                 if [ "$SETVAL" == "true" ]; then
                     echo "
                         [ $REMOUNT -eq 1 ] && mount -o remount,rw /system ;
-                        sed -i 's|^#echo\(.*\)>.*dev/tap_mode|echo\1> $dev/tap_mode|' $HW_CONFIG ;
+                        sed -i 's|^#echo\(.*\)>.*dev/tap_mode|echo\1> \$dev/tap_mode|' $HW_CONFIG ;
                         [ $REMOUNT -eq 1 ] && mount -o remount,ro /system ;
                         " | su
                 else
                     echo "
                         [ $REMOUNT -eq 1 ] && mount -o remount,rw /system ;
-                        sed -i 's|^echo\(.*\)>.*dev/tap_mode|#echo\1> $dev/tap_mode|' $HW_CONFIG ;
+                        sed -i 's|^echo\(.*\)>.*dev/tap_mode|#echo\1> \$dev/tap_mode|' $HW_CONFIG ;
                         [ $REMOUNT -eq 1 ] && mount -o remount,ro /system ;
                         " | su
                 fi
