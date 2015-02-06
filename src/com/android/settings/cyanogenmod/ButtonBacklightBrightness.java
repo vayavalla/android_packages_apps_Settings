@@ -271,7 +271,15 @@ public class ButtonBacklightBrightness extends DialogPreference implements
         if (mWindow != null) {
             LayoutParams params = mWindow.getAttributes();
             if (mActiveControl != null) {
-                params.buttonBrightness = (float) mActiveControl.getBrightness(false) / 255.0f;
+                int brightness = mActiveControl.getBrightness(false);
+                if (brightness > 255) {
+                    /* 
+                     * We are surely using a Backlight Adaptive feature
+                     * Preview can't be handle so we choose to set it to off
+                     */
+                    brightness = 0;
+                }
+                params.buttonBrightness = (float) brightness / 255.0f;
             } else {
                 params.buttonBrightness = -1;
             }
@@ -440,7 +448,11 @@ public class ButtonBacklightBrightness extends DialogPreference implements
         private void handleBrightnessUpdate(int brightness) {
             updateBrightnessPreview();
             if (mValue != null) {
-                mValue.setText(String.format("%d%%", (int)((brightness * 100) / 255)));
+                if (brightness == 256) {
+                    mValue.setText(R.string.adaptive_backlight_title);
+                } else {
+                    mValue.setText(String.format("%d%%", (int)((brightness * 100) / 255)));
+                }
             }
             updateTimeoutEnabledState();
         }
