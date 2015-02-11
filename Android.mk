@@ -27,9 +27,6 @@ LOCAL_RESOURCE_DIR := $(LOCAL_PATH)/res $(LOCAL_PATH)/../../../external/koush/Wi
 include frameworks/opt/setupwizard/navigationbar/common.mk
 include $(BUILD_PACKAGE)
 
-#nAOSProm
-include $(LOCAL_PATH)/nAOSProm/Android.mk
-
 # Use the following include to make our test apk.
 ifeq (,$(ONE_SHOT_MAKEFILE))
 include $(call all-makefiles-under,$(LOCAL_PATH))

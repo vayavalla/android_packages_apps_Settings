@@ -313,71 +313,66 @@
 
      </PreferenceCategory>
      
-     <!-- nAOSProm -->
-     <PreferenceCategory android:key="nAOSProm_category"
-            android:title="@string/nAOSProm_category">
+     <!-- uRom -->
+     <PreferenceCategory android:key="urom_category"
+            android:title="@string/urom_category">
        
        <Preference
-            android:key="help_naosprom"
-            android:summary="@string/help_naosprom_summary"
+            android:key="help_urom"
+            android:summary="@string/urom_help_summary"
             android:selectable="false"/>
 
         <ListPreference
-            android:key="use_zram"
-            android:title="@string/use_zram_title"
+            android:key="ram_minfree"
+            android:title="@string/ram_minfree_title"
             android:persistent="false"
-            android:entries="@array/use_zram_entries"
-            android:entryValues="@array/use_zram_values" />
+            android:entries="@array/ram_minfree_entries"
+            android:entryValues="@array/ram_minfree_values" />
 
         <ListPreference
-            android:key="use_minfree"
-            android:title="@string/use_minfree_title"
+            android:key="zram_size"
+            android:title="@string/zram_size_title"
             android:persistent="false"
-            android:entries="@array/use_minfree_entries"
-            android:entryValues="@array/use_minfree_values" />
+            android:entries="@array/zram_size_entries"
+            android:entryValues="@array/zram_size_values" />
 
         <ListPreference
-            android:key="use_lightbar"
-            android:title="@string/use_lightbar_title"
+            android:key="kernel_oc"
+            android:title="@string/kernel_oc_title"
             android:persistent="false"
-            android:entries="@array/use_lightbar_entries"
-            android:entryValues="@array/use_lightbar_values" />
+            android:entries="@array/kernel_oc_entries"
+            android:entryValues="@array/kernel_oc_values" />
 
         <ListPreference
-            android:key="use_kernel"
-            android:title="@string/use_kernel_title"
+            android:key="doze_brightness"
+            android:title="@string/doze_brightness_title"
             android:persistent="false"
-            android:entries="@array/use_kernel_entries"
-            android:entryValues="@array/use_kernel_values" />
+            android:entries="@array/doze_brightness_entries"
+            android:entryValues="@array/doze_brightness_values" />
 
         <ListPreference
-            android:key="use_hw_keys_layout"
-            android:title="@string/use_hw_keys_layout_title"
+            android:key="lightbar_mode"
+            android:title="@string/lightbar_mode_title"
             android:persistent="false"
-            android:entries="@array/use_hw_keys_layout_entries"
-            android:entryValues="@array/use_hw_keys_layout_values" />
+            android:entries="@array/lightbar_mode_entries"
+            android:entryValues="@array/lightbar_mode_values" />
+
+        <ListPreference
+            android:key="mainkeys_layout"
+            android:title="@string/mainkeys_layout_title"
+            android:persistent="false"
+            android:entries="@array/mainkeys_layout_entries"
+            android:entryValues="@array/mainkeys_layout_values" />
 
         <CheckBoxPreference
-            android:key="use_hw_keys_music"
-            android:title="@string/use_hw_keys_music_title"
-            android:summary="@string/use_hw_keys_music_summary"/>
-
-        <ListPreference
-            android:key="use_doze_brightness"
-            android:title="@string/use_doze_brightness_title"
-            android:persistent="false"
-            android:entries="@array/use_doze_brightness_entries"
-            android:entryValues="@array/use_doze_brightness_values" />
+            android:key="mainkeys_music"
+            android:title="@string/mainkeys_music_title"
+            android:summary="@string/mainkeys_music_summary"/>
 
         <CheckBoxPreference
-            android:key="use_dt2w"
-            android:title="@string/use_dt2w_title"
-            android:summary="@string/use_dt2w_summary"/>
-
-        <CheckBoxPreference
-            android:key="use_shake2w"
-            android:title="@string/use_shake2w_title"
-            android:summary="@string/use_shake2w_summary"/>
+            android:key="tap_wake"
+            android:title="@string/tap_wake_title"
+            android:summary="@string/tap_wake_summary"/>
 
      </PreferenceCategory>
 

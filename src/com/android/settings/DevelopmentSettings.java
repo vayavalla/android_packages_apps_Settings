@@ -72,10 +72,6 @@ import java.util.Arrays;
 import java.util.HashSet;
 import java.util.List;
 
-//nAOSProm
-import java.io.BufferedReader;
-import java.io.InputStreamReader;
-
 /*
  * Displays preferences for application developers.
  */
@@ -169,16 +165,31 @@ public class DevelopmentSettings extends SettingsPreferenceFragment
 
     private static String DEFAULT_LOG_RING_BUFFER_SIZE_IN_BYTES = "262144"; // 256K
     
-    //nAOSProm
-    private static final String USE_ZRAM_KEY = "use_zram";
-    private static final String USE_LIGHTBAR_KEY = "use_lightbar";
-    private static final String USE_KERNEL_KEY = "use_kernel";
-    private static final String USE_HW_KEYS_LAYOUT_KEY = "use_hw_keys_layout";
-    private static final String USE_HW_KEYS_MUSIC_KEY = "use_hw_keys_music";
-    private static final String USE_DOZE_BRIGHTNESS_KEY = "use_doze_brightness";
-    private static final String USE_MINFREE_KEY = "use_minfree";
-    private static final String USE_DT2W_KEY = "use_dt2w";
-    private static final String USE_SHAKE2W_KEY = "use_shake2w";
+    //urom
+    private static final String RAM_MINFREE_KEY = "ram_minfree";
+    private static final String RAM_MINFREE_PROPERTY = "persist.sys.ram_minfree";
+    
+    private static final String ZRAM_SIZE_KEY = "zram_size";
+    private static final String ZRAM_SIZE_PROPERTY = "persist.sys.zram_size";
+    private static final String ZRAM_ENABLE_PROPERTY = "persist.sys.zram_enable";
+    
+    private static final String KERNEL_OC_KEY = "kernel_oc";
+    private static final String KERNEL_OC_PROPERTY = "persist.kernel.oc";
+    
+    private static final String DOZE_BRIGHTNESS_KEY = "doze_brightness";
+    private static final String DOZE_BRIGHTNESS_PROPERTY = "persist.screen.doze_brightness";
+    
+    private static final String LIGHTBAR_MODE_KEY = "lightbar_mode";
+    private static final String LIGHTBAR_MODE_PROPERTY = "persist.sys.lightbar_mode";
+
+    private static final String MAINKEYS_LAYOUT_KEY = "mainkeys_layout";
+    private static final String MAINKEYS_LAYOUT_PROPERTY = "persist.qemu.hw.mainkeys_layout";
+    
+    private static final String MAINKEYS_MUSIC_KEY = "mainkeys_music";
+    private static final String MAINKEYS_MUSIC_PROPERTY = "persist.qemu.hw.mainkeys_music";
+
+    private static final String TAP_WAKE_KEY = "tap_wake";
+    private static final String TAP_WAKE_PROPERTY = "persist.screen.tap_wake";
 
     private IWindowManager mWindowManager;
     private IBackupManager mBackupManager;
@@ -244,16 +255,15 @@ public class DevelopmentSettings extends SettingsPreferenceFragment
 
     private CheckBoxPreference mShowAllANRs;
     
-    //nAOSProm
-    private ListPreference mUseZram;
-    private ListPreference mUseLightbar;
-    private ListPreference mUseKernel;
-    private ListPreference mUseHwKeysLayout;
-    private CheckBoxPreference mUseHwKeysMusic;
-    private ListPreference mUseDozeBrightness;
-    private ListPreference mUseMinFree;
-    private CheckBoxPreference mUseDt2w;
-    private CheckBoxPreference mUseShake2w;
+    //urom
+    private ListPreference mRamMinfree;
+    private ListPreference mZramSize;
+    private ListPreference mKernelOc;
+    private ListPreference mDozeBrightness;
+    private ListPreference mLightbarMode;
+    private ListPreference mMainkeysLayout;
+    private CheckBoxPreference mMainkeysMusic;
+    private CheckBoxPreference mTapWake;
 
     private PreferenceScreen mProcessStats;
     private final ArrayList<Preference> mAllPrefs = new ArrayList<Preference>();
@@ -392,16 +402,15 @@ public class DevelopmentSettings extends SettingsPreferenceFragment
         mProcessStats = (PreferenceScreen) findPreference(PROCESS_STATS);
         mAllPrefs.add(mProcessStats);
         
-        //nAOSProm
-        mUseZram = addListPreference(USE_ZRAM_KEY);
-        mUseLightbar = addListPreference(USE_LIGHTBAR_KEY);
-        mUseKernel = addListPreference(USE_KERNEL_KEY);
-        mUseHwKeysLayout = addListPreference(USE_HW_KEYS_LAYOUT_KEY);
-        mUseHwKeysMusic = findAndInitCheckboxPref(USE_HW_KEYS_MUSIC_KEY);
-        mUseDozeBrightness = addListPreference(USE_DOZE_BRIGHTNESS_KEY);
-        mUseMinFree = addListPreference(USE_MINFREE_KEY);
-        mUseDt2w = findAndInitCheckboxPref(USE_DT2W_KEY);
-        mUseShake2w = findAndInitCheckboxPref(USE_SHAKE2W_KEY);
+        //urom
+        mRamMinfree = addListPreference(RAM_MINFREE_KEY);
+        mZramSize = addListPreference(ZRAM_SIZE_KEY);
+        mKernelOc = addListPreference(KERNEL_OC_KEY);
+        mDozeBrightness = addListPreference(DOZE_BRIGHTNESS_KEY);
+        mLightbarMode = addListPreference(LIGHTBAR_MODE_KEY);
+        mMainkeysLayout = addListPreference(MAINKEYS_LAYOUT_KEY);
+        mMainkeysMusic = findAndInitCheckboxPref(MAINKEYS_MUSIC_KEY);
+        mTapWake = findAndInitCheckboxPref(TAP_WAKE_KEY);
     }
 
     private ListPreference addListPreference(String prefKey) {
@@ -582,16 +591,15 @@ public class DevelopmentSettings extends SettingsPreferenceFragment
         updateUseNuplayerOptions();
         updateUSBAudioOptions();
         
-        //nAOSProm
-        updateUseGeneric_nAOSProm_Options(mUseZram,"zram-size");
-        updateUseGeneric_nAOSProm_Options(mUseLightbar,"lightbar-mode");
-        updateUseGeneric_nAOSProm_Options(mUseKernel,"kernel");
-        updateUseGeneric_nAOSProm_Options(mUseHwKeysLayout,"hw-keys-layout");
-        updateUseCheckGeneric_nAOSProm_Options(mUseHwKeysMusic,"hw-keys-music");
-        updateUseGeneric_nAOSProm_Options(mUseDozeBrightness,"doze-brightness");
-        updateUseGeneric_nAOSProm_Options(mUseMinFree,"minfree");
-        updateUseCheckGeneric_nAOSProm_Options(mUseDt2w,"dt2w");
-        updateUseCheckGeneric_nAOSProm_Options(mUseShake2w,"shake2w");
+        //urom
+        updateRamMinfreeOptions();
+        updateZramSizeOptions();
+        updateKernelOcOptions();
+        updateDozeBrightnessOptions();
+        updateLightbarModeOptions();
+        updateMainkeysLayoutOptions();
+        updateMainkeysMusicOptions();
+        updateTapWakeOptions();
     }
 
     private void resetDangerousOptions() {
@@ -1325,55 +1333,142 @@ public class DevelopmentSettings extends SettingsPreferenceFragment
             getActivity().getContentResolver(), Settings.Secure.ANR_SHOW_BACKGROUND, 0) != 0);
     }
     
-    //nAOSProm    
+    //urom
+    private void updateRamMinfreeOptions() {
+        String value = SystemProperties.get(RAM_MINFREE_PROPERTY, "-1");
+        int index = mRamMinfree.findIndexOfValue(value);
+        if (index == -1) {
+            index = mRamMinfree.getEntryValues().length - 1;
+        }
+        mRamMinfree.setValueIndex(index);
+        mRamMinfree.setSummary(mRamMinfree.getEntries()[index]);
+    }
 
-    private void updateUseGeneric_nAOSProm_Options(ListPreference listPref, String action) {
-        String value = _naospromctl(new String[]{"/system/bin/sh",
-                               "/system/xbin/naospromctl",
-                               "get",
-                               action});
-    
-        CharSequence[] values = listPref.getEntryValues();
-        for (int i = 0; i < values.length; i++) {
-            if (value.contentEquals(values[i])) {
-                listPref.setValueIndex(i);
-                listPref.setSummary(listPref.getEntries()[i]);
-                return;
-            }
+    private void writeRamMinfreeOptions(Object newValue) {
+        if (newValue.toString().contentEquals("-2")) {
+            // custom
+            return;
         }
         
-        //Default behaviour
-        listPref.setValueIndex(values.length - 1);
-        listPref.setSummary(listPref.getEntries()[values.length - 1]);
+        SystemProperties.set(RAM_MINFREE_PROPERTY, newValue.toString());
+        updateRamMinfreeOptions();
+    }
+
+    private void updateZramSizeOptions() {
+        String value = SystemProperties.get(ZRAM_SIZE_PROPERTY, "0");
+        int index = mZramSize.findIndexOfValue(value);
+        if (index == -1) {
+            index = mZramSize.getEntryValues().length - 1;
+        }
+        mZramSize.setValueIndex(index);
+        mZramSize.setSummary(mZramSize.getEntries()[index]);
+    }
+
+    private void writeZramSizeOptions(Object newValue) {
+        String value = newValue.toString();
+    
+        if (value.contentEquals("-2")) {
+            // custom
+            return;
+        }
+        
+        SystemProperties.set(ZRAM_SIZE_PROPERTY, value);
+        
+        if (value.contentEquals("0")) {
+            SystemProperties.set(ZRAM_ENABLE_PROPERTY, "false");
+        } else {
+            SystemProperties.set(ZRAM_ENABLE_PROPERTY, "true");
+        }
+        
+        updateZramSizeOptions();
     }
     
-    private void writeUseGeneric_nAOSProm_Options(ListPreference listPref, String action, Object newValue) {
-        _naospromctl(new String[]{"/system/bin/sh",
-                               "/system/xbin/naospromctl",
-                               "set",
-                               action,
-                               newValue.toString()});
-                               
-        updateUseGeneric_nAOSProm_Options(listPref, action);
+    private void updateKernelOcOptions() {
+        String value = SystemProperties.get(KERNEL_OC_PROPERTY, "disabled");
+        int index = mKernelOc.findIndexOfValue(value);
+        
+        if (index == -1) {
+            index = 0;
+        }
+        mKernelOc.setValueIndex(index);
+        mKernelOc.setSummary(mKernelOc.getEntries()[index]);
+    }
+
+    private void writeKernelOcOptions(Object newValue) {
+        SystemProperties.set(KERNEL_OC_PROPERTY, newValue.toString());
+        updateKernelOcOptions();
     }
     
-    private void updateUseCheckGeneric_nAOSProm_Options(CheckBoxPreference checkPref, String action) {
-        String value = _naospromctl(new String[]{"/system/bin/sh",
-                               "/system/xbin/naospromctl",
-                               "get",
-                               action});
-    
-        updateCheckBox(checkPref, !value.contentEquals("false"));
+    private void updateDozeBrightnessOptions() {
+        String value = SystemProperties.get(DOZE_BRIGHTNESS_PROPERTY, "-1");
+        int index = mDozeBrightness.findIndexOfValue(value);
+        if (index == -1) {
+            index = mDozeBrightness.getEntryValues().length - 1;
+        }
+        mDozeBrightness.setValueIndex(index);
+        mDozeBrightness.setSummary((mDozeBrightness.getEntries()[index]).toString().replace("%","%%"));
+    }
+
+    private void writeDozeBrightnessOptions(Object newValue) {
+        if (newValue.toString().contentEquals("-2")) {
+            // custom
+            return;
+        }
+        
+        SystemProperties.set(DOZE_BRIGHTNESS_PROPERTY, newValue.toString());
+        updateDozeBrightnessOptions();
     }
     
-    private void writeUseCheckGeneric_nAOSProm_Options(CheckBoxPreference checkPref, String action) {
-        _naospromctl(new String[]{"/system/bin/sh",
-                               "/system/xbin/naospromctl",
-                               "set",
-                               action,
-                               checkPref.isChecked() ? "true" : "false"});
-                               
-        updateUseCheckGeneric_nAOSProm_Options(checkPref, action);
+    private void updateLightbarModeOptions() {
+        String value = SystemProperties.get(LIGHTBAR_MODE_PROPERTY, "1");
+        int index = mLightbarMode.findIndexOfValue(value);
+        if (index == -1) {
+            index = 1;
+        }
+        mLightbarMode.setValueIndex(index);
+        mLightbarMode.setSummary(mLightbarMode.getEntries()[index]);
+    }
+    
+    private void writeLightbarModeOptions(Object newValue) {
+        SystemProperties.set(LIGHTBAR_MODE_PROPERTY, newValue.toString());
+        updateLightbarModeOptions();
+    }
+    
+    private void updateMainkeysLayoutOptions() {
+        String value = SystemProperties.get(MAINKEYS_LAYOUT_PROPERTY, "1");
+        int index = mMainkeysLayout.findIndexOfValue(value);
+        if (index == -1) {
+            index = 1;
+        }
+        mMainkeysLayout.setValueIndex(index);
+        mMainkeysLayout.setSummary(mMainkeysLayout.getEntries()[index]);
+    }
+    
+    private void writeMainkeysLayoutOptions(Object newValue) {
+        SystemProperties.set(MAINKEYS_LAYOUT_PROPERTY, newValue.toString());
+        updateMainkeysLayoutOptions();
+    }
+    
+    private void updateMainkeysMusicOptions() {
+        updateCheckBox(mMainkeysMusic, 
+                !SystemProperties.get(MAINKEYS_MUSIC_PROPERTY, "1").contentEquals("0"));
+    }
+    
+    private void writeMainkeysMusicOptions() {
+        SystemProperties.set(MAINKEYS_MUSIC_PROPERTY, 
+                mMainkeysMusic.isChecked() ? "1" : "0");
+        updateMainkeysMusicOptions();
+    }
+    
+    private void updateTapWakeOptions() {
+        updateCheckBox(mTapWake, 
+                !SystemProperties.get(TAP_WAKE_PROPERTY, "true").contentEquals("false"));
+    }
+    
+    private void writeTapWakeOptions() {
+        SystemProperties.set(TAP_WAKE_PROPERTY, 
+                mTapWake.isChecked() ? "true" : "false");
+        updateTapWakeOptions();
     }
     
     @Override
@@ -1519,12 +1614,10 @@ public class DevelopmentSettings extends SettingsPreferenceFragment
             writeUseNuplayerOptions();
         } else if (preference == mUSBAudio) {
             writeUSBAudioOptions();
-        } else if (preference == mUseHwKeysMusic) {
-            writeUseCheckGeneric_nAOSProm_Options(mUseHwKeysMusic,"hw-keys-music");
-        } else if (preference == mUseDt2w) {
-            writeUseCheckGeneric_nAOSProm_Options(mUseDt2w,"dt2w");
-        } else if (preference == mUseShake2w) {
-            writeUseCheckGeneric_nAOSProm_Options(mUseShake2w,"shake2w");
+        } else if (preference == mMainkeysMusic) {
+            writeMainkeysMusicOptions();
+        } else if (preference == mTapWake) {
+            writeTapWakeOptions();
         } else {
             return super.onPreferenceTreeClick(preferenceScreen, preference);
         }
@@ -1572,23 +1665,23 @@ public class DevelopmentSettings extends SettingsPreferenceFragment
         } else if (preference == mSimulateColorSpace) {
             writeSimulateColorSpace(newValue);
             return true;
-        } else if (preference == mUseZram) {
-            writeUseGeneric_nAOSProm_Options(mUseZram,"zram-size",newValue);
+        } else if (preference == mRamMinfree) {
+            writeRamMinfreeOptions(newValue);
             return true;
-        } else if (preference == mUseLightbar) {
-            writeUseGeneric_nAOSProm_Options(mUseLightbar,"lightbar-mode",newValue);
+        } else if (preference == mZramSize) {
+            writeZramSizeOptions(newValue);
             return true;
-        } else if (preference == mUseKernel) {
-            writeUseGeneric_nAOSProm_Options(mUseKernel,"kernel",newValue);
+        } else if (preference == mKernelOc) {
+            writeKernelOcOptions(newValue);
             return true;
-        } else if (preference == mUseHwKeysLayout) {
-            writeUseGeneric_nAOSProm_Options(mUseHwKeysLayout,"hw-keys-layout",newValue);
+        } else if (preference == mDozeBrightness) {
+            writeDozeBrightnessOptions(newValue);
             return true;
-        } else if (preference == mUseDozeBrightness) {
-            writeUseGeneric_nAOSProm_Options(mUseDozeBrightness,"doze-brightness",newValue);
+        } else if (preference == mLightbarMode) {
+            writeLightbarModeOptions(newValue);
             return true;
-        } else if (preference == mUseMinFree) {
-            writeUseGeneric_nAOSProm_Options(mUseMinFree,"minfree",newValue);
+        } else if (preference == mMainkeysLayout) {
+            writeMainkeysLayoutOptions(newValue);
             return true;
         }
         return false;
@@ -1748,27 +1841,4 @@ public class DevelopmentSettings extends SettingsPreferenceFragment
                     return keys;
                 }
             };
-    
-    /**
-     * Wrapper for nAOSProm control script
-     */
-    private String _naospromctl(String[] cmd) {
-
-        java.lang.Process p = null;
-        String value = "";
-        
-        try {
-            p = new java.lang.ProcessBuilder(cmd).redirectErrorStream(true).start();
-            BufferedReader br = new BufferedReader(new InputStreamReader(p.getInputStream()));
-            String line = "";
-            while ((line=br.readLine()) != null){
-                value = line;
-            }
-            p.destroy();
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-        
-        return value;
-    }
 }

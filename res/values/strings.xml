@@ -5978,45 +5978,39 @@
 
    <!-- Message for encryption dialog telling the user that Talkback and other accessibility services will be disabled. -->
    <string name="encrypt_talkback_dialog_message_password">When you enter your password to start this device, accessibility services like <xliff:g id="service" example="TalkBack">%1$s</xliff:g> won\'t yet be available.</string>
+   
+   <!-- uRom -->
+   <string name="urom_category">nAOSProm</string>
+   <string name="urom_generic_custom">Custom</string>
+   <string name="urom_generic_disabled">Disabled</string>
+   <string name="urom_generic_default">Default</string>
+   <string name="urom_help_summary">(*) need a reboot, (**) need a reflash</string>
 
-   <!-- nAOSProm -->
-   <!-- Preference category for nAOSProm. [CHAR LIMIT=25] -->
-   <string name="nAOSProm_category">nAOSProm</string>
-   
-   <!-- UI debug setting: help summary [CHAR LIMIT=25] -->
-   <string name="help_naosprom_summary">(*) need a reboot, (**) need a reflash</string>
-   
-   <!-- UI debug setting: zram [CHAR LIMIT=25] -->
-   <string name="use_zram_title">Swap/zram (*)</string>
+   <!-- Ram minfree -->
+   <string name="ram_minfree_title">Low memory killer (*)</string>
+   <string name="ram_minfree_automatic">Automatic</string>
 
-   <!-- UI debug setting: lightbar [CHAR LIMIT=25] -->
-   <string name="use_lightbar_title">Light bar (*)</string>
+   <!-- zram -->
+   <string name="zram_size_title">Swap/zram (*)</string>
    
-   <!-- UI debug setting: kernel [CHAR LIMIT=25] -->
-   <string name="use_kernel_title">Overclocking (**)</string>
-
-   <!-- UI debug setting: hw keys layout [CHAR LIMIT=25] -->
-   <string name="use_hw_keys_layout_title">Physical Keys Layout (*)</string>
+   <!-- kernel -->
+   <string name="kernel_oc_title">Overclocking (**)</string>
    
-   <!-- UI debug setting: hw keys music [CHAR LIMIT=25] -->
-   <string name="use_hw_keys_music_title">Physical Keys Music (*)</string>
-   <!-- UI debug setting: hw keys music summary [CHAR LIMIT=50] -->
-   <string name="use_hw_keys_music_summary">Music controls when screen is off</string>
+   <!-- lightbar -->
+   <string name="lightbar_mode_title">Light bar (*)</string>
    
-   <!-- UI debug setting: doze brightness [CHAR LIMIT=25] -->
-   <string name="use_doze_brightness_title">Brightness during Doze (*)</string>
-
-   <!-- UI debug setting: minfree [CHAR LIMIT=25] -->
-   <string name="use_minfree_title">Low memory killer (*)</string>
+   <!-- hw keys layout -->
+   <string name="mainkeys_layout_title">Physical Keys Layout (*)</string>
    
-   <!-- UI debug setting: dt2w [CHAR LIMIT=25] -->
-   <string name="use_dt2w_title">Double tap to wake (*)</string>
-   <!-- UI debug setting: dt2w summary [CHAR LIMIT=50] -->
-   <string name="use_dt2w_summary">Double tap on screen to wake up</string>
+   <!-- hw keys music -->
+   <string name="mainkeys_music_title">Physical Keys Music (*)</string>
+   <string name="mainkeys_music_summary">Music controls when screen is off</string>
    
-   <!-- UI debug setting: wrist [CHAR LIMIT=25] -->
-   <string name="use_shake2w_title">Shake to wake (*)</string>
-   <!-- UI debug setting: tilt summary [CHAR LIMIT=50] -->
-   <string name="use_shake2w_summary">Shake the device to wake up</string>
+   <!-- doze brightness -->
+   <string name="doze_brightness_title">Ambient brightness level (*)</string>
+   
+   <!-- tap_wake -->
+   <string name="tap_wake_title">Double tap to wake</string>
+   <string name="tap_wake_summary">Double tap on screen to wake up</string>
    
 </resources>

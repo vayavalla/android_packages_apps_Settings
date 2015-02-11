@@ -1272,98 +1272,10 @@
         <item>Cached (empty)</item>
     </string-array>
     
-    <!-- nAOSProm -->
-    <!-- Titles for zram preference. [CHAR LIMIT=35] -->
-    <string-array name="use_zram_entries">
-        <item>Disable</item>
-        <item>96 MiB</item>
-        <item>128 MiB</item>
-        <item>160 MiB</item>
-        <item>192 MiB</item>
-        <item>224 MiB</item>
-        <item>256 MiB</item>
-        <item>288 MiB</item>
-        <item>Other</item>
-    </string-array>
-
-    <!-- Values for zram preference. -->
-    <string-array name="use_zram_values" translatable="false" >
-        <item>0</item>
-        <item>100663296</item>
-        <item>134217728</item>
-        <item>167772160</item>
-        <item>201326592</item>
-        <item>234881024</item>
-        <item>268435456</item>
-        <item>301989888</item>
-        <item>-1</item>
-    </string-array>
-
-    <!-- Titles for lightbar preference. [CHAR LIMIT=35] -->
-    <string-array name="use_lightbar_entries">
-        <item>Always off</item>
-        <item>On with timeout</item>
-        <item>On/Off with the screen</item>
-    </string-array>
-
-    <!-- Values for lightbar preference. -->
-    <string-array name="use_lightbar_values" translatable="false" >
-        <item>0</item>
-        <item>1</item>
-        <item>2</item>
-    </string-array>
-    
-    <!-- Titles for kernel preference. [CHAR LIMIT=35] -->
-    <string-array name="use_kernel_entries">
-        <item>Disable</item>
-        <item>1.73 Ghz (gpu: 320Mhz)</item>
-        <item>1.83 Ghz (gpu: 320Mhz)</item>
-        <item>Other</item>
-    </string-array>
-
-    <!-- Values for kernel preference. -->
-    <string-array name="use_kernel_values" translatable="false" >
-        <item>standard</item>
-        <item>oc</item>
-        <item>oc_ultra</item>
-        <item>-1</item>
-    </string-array>
-
-    <!-- Titles for hw keys layout preference. [CHAR LIMIT=35] -->
-    <string-array name="use_hw_keys_layout_entries">
-        <item>Deprecated (Android 2.3)</item>
-        <item>Modern (Android 4.4+)</item>
-    </string-array>
-
-    <!-- Values for hw keys layout preference. -->
-    <string-array name="use_hw_keys_layout_values" translatable="false" >
-        <item>0</item>
-        <item>1</item>
-    </string-array>
-    
-    <!-- Titles for doze brightness preference. [CHAR LIMIT=35] -->
-    <string-array name="use_doze_brightness_entries">
-        <item>Default</item>
-        <item>30/255</item>
-        <item>50/255</item>
-        <item>60/255</item>
-        <item>80/255</item>
-        <item>Other</item>
-    </string-array>
-
-    <!-- Values for doze brightness preference. -->
-    <string-array name="use_doze_brightness_values" translatable="false" >
-        <item>-1</item>
-        <item>30</item>
-        <item>50</item>
-        <item>60</item>
-        <item>80</item>
-        <item>-2</item>
-    </string-array>
-    
-    <!-- Titles for minfree preference. [CHAR LIMIT=35] -->
-    <string-array name="use_minfree_entries">
-        <item>Automatic</item>
+    <!-- urom -->
+    <!-- Arrays for ram minfree -->
+    <string-array name="ram_minfree_entries" translatable="false">
+        <item>@string/ram_minfree_automatic</item>
         <item>75 MiB</item>
         <item>90 MiB</item>
         <item>105 MiB</item>
@@ -1371,11 +1283,10 @@
         <item>135 MiB</item>
         <item>150 MiB</item>
         <item>165 MiB</item>
-        <item>Other</item>
+        <item>@string/urom_generic_custom</item>
     </string-array>
 
-    <!-- Values for minfree preference. -->
-    <string-array name="use_minfree_values" translatable="false" >
+    <string-array name="ram_minfree_values" translatable="false">
         <item>-1</item>
         <item>76800</item>
         <item>92160</item>
@@ -1385,5 +1296,88 @@
         <item>153600</item>
         <item>168960</item>
         <item>-2</item>
+    </string-array>
+    
+    <!-- Array for zram -->
+    <string-array name="zram_size_entries">
+        <item>@string/urom_generic_disabled</item>
+        <item>96 MiB</item>
+        <item>128 MiB</item>
+        <item>160 MiB</item>
+        <item>192 MiB</item>
+        <item>224 MiB</item>
+        <item>256 MiB</item>
+        <item>288 MiB</item>
+        <item>@string/urom_generic_custom</item>
+    </string-array>
+
+    <string-array name="zram_size_values" translatable="false" >
+        <item>0</item>
+        <item>100663296</item>
+        <item>134217728</item>
+        <item>167772160</item>
+        <item>201326592</item>
+        <item>234881024</item>
+        <item>268435456</item>
+        <item>301989888</item>
+        <item>-2</item>
+    </string-array>
+    
+    <!-- Array for kernel -->
+    <string-array name="kernel_oc_entries">
+        <item>@string/urom_generic_disabled</item>
+        <item>1.73 Ghz (gpu: 320Mhz)</item>
+        <item>1.83 Ghz (gpu: 320Mhz)</item>
+    </string-array>
+
+    <string-array name="kernel_oc_values" translatable="false" >
+        <item>disabled</item>
+        <item>oc</item>
+        <item>oc_ultra</item>
+    </string-array>
+
+    <!-- Array for doze brightness -->
+    <string-array name="doze_brightness_entries">
+        <item>@string/urom_generic_default</item>
+        <item>15%</item>
+        <item>20%</item>
+        <item>25%</item>
+        <item>30%</item>
+        <item>35%</item>
+        <item>@string/urom_generic_custom</item>
+    </string-array>
+
+    <string-array name="doze_brightness_values" translatable="false" >
+        <item>-1</item>
+        <item>38</item>
+        <item>51</item>
+        <item>64</item>
+        <item>77</item>
+        <item>90</item>
+        <item>-2</item>
+    </string-array>
+    
+    <!-- Array for lightbar -->
+    <string-array name="lightbar_mode_entries">
+        <item>Always off</item>
+        <item>On with 5s timeout</item>
+        <item>On/Off with the screen</item>
+    </string-array>
+
+    <string-array name="lightbar_mode_values" translatable="false" >
+        <item>0</item>
+        <item>1</item>
+        <item>2</item>
+    </string-array>
+
+    <!-- Array for mainkeys layout -->
+    <string-array name="mainkeys_layout_entries">
+        <item>Deprecated (Android 2.3)</item>
+        <item>Modern (Android 4.4+)</item>
+    </string-array>
+
+    <string-array name="mainkeys_layout_values" translatable="false" >
+        <item>0</item>
+        <item>1</item>
     </string-array>
 </resources>
