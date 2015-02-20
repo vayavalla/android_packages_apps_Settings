@@ -1339,6 +1339,7 @@
     <!-- Array for doze brightness -->
     <string-array name="doze_brightness_entries">
         <item>@string/urom_generic_default</item>
+        <item>10%</item>
         <item>15%</item>
         <item>20%</item>
         <item>25%</item>
@@ -1349,6 +1350,7 @@
 
     <string-array name="doze_brightness_values" translatable="false" >
         <item>-1</item>
+        <item>25</item>
         <item>38</item>
         <item>51</item>
         <item>64</item>
