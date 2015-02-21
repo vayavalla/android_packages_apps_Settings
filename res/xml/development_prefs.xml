@@ -374,6 +374,13 @@
             android:title="@string/tap_wake_title"
             android:summary="@string/tap_wake_summary"/>
 
+        <com.android.settings.DisplayColor
+            android:key="color_calibration"
+            android:title="@string/color_calibration_title"
+            android:dialogTitle="@string/color_calibration_title"
+            android:summary="@string/color_calibration_summary"
+            android:persistent="false" />
+
      </PreferenceCategory>
 
 </PreferenceScreen>
