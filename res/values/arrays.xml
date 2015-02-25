@@ -1327,7 +1327,7 @@
     <string-array name="kernel_oc_entries">
         <item>@string/urom_generic_disabled</item>
         <item>1.73 Ghz (gpu: 320Mhz)</item>
-        <item>1.83 Ghz (gpu: 320Mhz)</item>
+        <item>1.51-2.05 Ghz (gpu: 320Mhz)</item>
     </string-array>
 
     <string-array name="kernel_oc_values" translatable="false" >
