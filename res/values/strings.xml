@@ -6020,5 +6020,8 @@
    <string name="color_red_title">Red</string>
    <string name="color_green_title">Green</string>
    <string name="color_blue_title">Blue</string>
-   
+
+   <!-- fast charge -->
+   <string name="fast_charge">USB Fast Charge</string>
+
 </resources>
