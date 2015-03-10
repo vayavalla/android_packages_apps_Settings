@@ -364,12 +364,12 @@
             android:entries="@array/mainkeys_layout_entries"
             android:entryValues="@array/mainkeys_layout_values" />
 
-        <CheckBoxPreference
+        <SwitchPreference
             android:key="mainkeys_music"
             android:title="@string/mainkeys_music_title"
             android:summary="@string/mainkeys_music_summary"/>
 
-        <CheckBoxPreference
+        <SwitchPreference
             android:key="tap_wake"
             android:title="@string/tap_wake_title"
             android:summary="@string/tap_wake_summary"/>

@@ -255,7 +255,7 @@ public class DevelopmentSettings extends SettingsPreferenceFragment
 
     private ListPreference mAppProcessLimit;
 
-    private CheckBoxPreference mShowAllANRs;
+    private SwitchPreference mShowAllANRs;
     
     //urom
     private ListPreference mRamMinfree;
@@ -264,8 +264,8 @@ public class DevelopmentSettings extends SettingsPreferenceFragment
     private ListPreference mDozeBrightness;
     private ListPreference mLightbarMode;
     private ListPreference mMainkeysLayout;
-    private CheckBoxPreference mMainkeysMusic;
-    private CheckBoxPreference mTapWake;
+    private SwitchPreference mMainkeysMusic;
+    private SwitchPreference mTapWake;
 
     private PreferenceScreen mProcessStats;
     private final ArrayList<Preference> mAllPrefs = new ArrayList<Preference>();
@@ -411,8 +411,8 @@ public class DevelopmentSettings extends SettingsPreferenceFragment
         mDozeBrightness = addListPreference(DOZE_BRIGHTNESS_KEY);
         mLightbarMode = addListPreference(LIGHTBAR_MODE_KEY);
         mMainkeysLayout = addListPreference(MAINKEYS_LAYOUT_KEY);
-        mMainkeysMusic = findAndInitCheckboxPref(MAINKEYS_MUSIC_KEY);
-        mTapWake = findAndInitCheckboxPref(TAP_WAKE_KEY);
+        mMainkeysMusic = (SwitchPreference) findPreference(MAINKEYS_MUSIC_KEY);
+        mTapWake = (SwitchPreference) findPreference(TAP_WAKE_KEY);
     }
 
     private ListPreference addListPreference(String prefKey) {
@@ -1470,7 +1470,7 @@ public class DevelopmentSettings extends SettingsPreferenceFragment
     }
     
     private void updateMainkeysMusicOptions() {
-        updateCheckBox(mMainkeysMusic, 
+        updateSwitchPreference(mMainkeysMusic, 
                 !SystemProperties.get(MAINKEYS_MUSIC_PROPERTY, "1").contentEquals("0"));
     }
     
@@ -1481,7 +1481,7 @@ public class DevelopmentSettings extends SettingsPreferenceFragment
     }
     
     private void updateTapWakeOptions() {
-        updateCheckBox(mTapWake, 
+        updateSwitchPreference(mTapWake, 
                 !SystemProperties.get(TAP_WAKE_PROPERTY, "true").contentEquals("false"));
     }
     
