@@ -385,4 +385,36 @@
 
      </PreferenceCategory>
 
+     <!-- uRom -->
+     <PreferenceCategory android:key="urom_category"
+            android:title="@string/urom_category">
+       
+       <Preference
+            android:key="help_urom"
+            android:summary="@string/urom_help_summary"
+            android:selectable="false"/>
+
+        <ListPreference
+            android:key="ram_minfree"
+            android:title="@string/ram_minfree_title"
+            android:persistent="false"
+            android:entries="@array/ram_minfree_entries"
+            android:entryValues="@array/ram_minfree_values" />
+
+        <ListPreference
+            android:key="zram_size"
+            android:title="@string/zram_size_title"
+            android:persistent="false"
+            android:entries="@array/zram_size_entries"
+            android:entryValues="@array/zram_size_values" />
+
+        <ListPreference
+            android:key="doze_brightness"
+            android:title="@string/doze_brightness_title"
+            android:persistent="false"
+            android:entries="@array/doze_brightness_entries"
+            android:entryValues="@array/doze_brightness_values" />
+
+     </PreferenceCategory>
+
 </PreferenceScreen>

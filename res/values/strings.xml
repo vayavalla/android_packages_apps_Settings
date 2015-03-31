@@ -6061,4 +6061,20 @@
    <string name="imei_information_summary">IMEI relative information</string>
    <string name="slot_number">(Slot<xliff:g id="slot_num">%1$d</xliff:g>)</string>
 
+    <!-- uRom -->
+    <string name="urom_category">uCyan 12</string>
+    <string name="urom_generic_custom">Custom</string>
+    <string name="urom_generic_disabled">Disabled</string>
+    <string name="urom_generic_default">Default</string>
+    <string name="urom_help_summary">(*) need a reboot, (**) need a reflash</string>
+   
+    <!-- Ram minfree -->
+    <string name="ram_minfree_title">Low memory killer (*)</string>
+    <string name="ram_minfree_automatic">Automatic</string>
+    
+    <!-- zram -->
+    <string name="zram_size_title">Swap in memory (*)</string>
+
+    <!-- doze brightness -->
+    <string name="doze_brightness_title">Ambient brightness level (*)</string>
 </resources>
