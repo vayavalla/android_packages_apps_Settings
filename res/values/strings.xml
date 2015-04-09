@@ -5979,4 +5979,24 @@
    <!-- Message for encryption dialog telling the user that Talkback and other accessibility services will be disabled. -->
    <string name="encrypt_talkback_dialog_message_password">When you enter your password to start this device, accessibility services like <xliff:g id="service" example="TalkBack">%1$s</xliff:g> won\'t yet be available.</string>
 
+    <!-- uRom -->
+    <string name="urom_category">uCyan 12</string>
+    <string name="urom_generic_custom">Custom</string>
+    <string name="urom_generic_disabled">Disabled</string>
+    <string name="urom_generic_default">Default</string>
+    <string name="urom_help_summary">(*) need a reboot, (**) need a reflash</string>
+   
+    <!-- Ram minfree -->
+    <string name="ram_minfree_title">Low memory killer (*)</string>
+    <string name="ram_minfree_automatic">Automatic</string>
+    
+    <!-- zram -->
+    <string name="zram_size_title">Swap in memory (*)</string>
+
+    <!-- doze brightness -->
+    <string name="doze_brightness_title">Ambient brightness level (*)</string>
+
+   <!-- fast charge -->
+   <string name="fast_charge">USB Fast Charge</string>
+
 </resources>

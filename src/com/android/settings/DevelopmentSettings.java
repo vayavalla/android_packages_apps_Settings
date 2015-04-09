@@ -187,6 +187,16 @@ public class DevelopmentSettings extends SettingsPreferenceFragment
 
     private static String DEFAULT_LOG_RING_BUFFER_SIZE_IN_BYTES = "262144"; // 256K
 
+    private static final String RAM_MINFREE_KEY = "ram_minfree";
+    private static final String RAM_MINFREE_PROPERTY = "persist.sys.ram_minfree";
+    
+    private static final String ZRAM_SIZE_KEY = "zram_size";
+    private static final String ZRAM_SIZE_PROPERTY = "persist.sys.zram_size";
+    private static final String ZRAM_ENABLE_PROPERTY = "persist.sys.zram_enable";
+    
+    private static final String DOZE_BRIGHTNESS_KEY = "doze_brightness";
+    private static final String DOZE_BRIGHTNESS_PROPERTY = "persist.screen.doze_brightness";
+
     private IWindowManager mWindowManager;
     private IBackupManager mBackupManager;
     private DevicePolicyManager mDpm;
@@ -266,6 +276,10 @@ public class DevelopmentSettings extends SettingsPreferenceFragment
     private SwitchPreference mUpdateRecovery;
 
     private SwitchPreference mDevelopmentShortcut;
+
+    private ListPreference mRamMinfree;
+    private ListPreference mZramSize;
+    private ListPreference mDozeBrightness;
 
     private final ArrayList<Preference> mAllPrefs = new ArrayList<Preference>();
 
@@ -433,6 +447,10 @@ public class DevelopmentSettings extends SettingsPreferenceFragment
 
         mDevelopmentTools = (PreferenceScreen) findPreference(DEVELOPMENT_TOOLS);
         mAllPrefs.add(mDevelopmentTools);
+
+        mRamMinfree = addListPreference(RAM_MINFREE_KEY);
+        mZramSize = addListPreference(ZRAM_SIZE_KEY);
+        mDozeBrightness = addListPreference(DOZE_BRIGHTNESS_KEY);
     }
 
     private ListPreference addListPreference(String prefKey) {
@@ -638,6 +656,9 @@ public class DevelopmentSettings extends SettingsPreferenceFragment
         updateAdvancedRebootOptions();
         updateDevelopmentShortcutOptions();
         updateUpdateRecoveryOptions();
+        updateRamMinfreeOptions();
+        updateZramSizeOptions();
+        updateDozeBrightnessOptions();
     }
 
     private void writeAdvancedRebootOptions() {
@@ -1516,6 +1537,75 @@ public class DevelopmentSettings extends SettingsPreferenceFragment
         }
     }
 
+    private void updateRamMinfreeOptions() {
+        String value = SystemProperties.get(RAM_MINFREE_PROPERTY, "-1");
+        int index = mRamMinfree.findIndexOfValue(value);
+        if (index == -1) {
+            index = mRamMinfree.getEntryValues().length - 1;
+        }
+        mRamMinfree.setValueIndex(index);
+        mRamMinfree.setSummary(mRamMinfree.getEntries()[index]);
+    }
+
+    private void writeRamMinfreeOptions(Object newValue) {
+        if (newValue.toString().contentEquals("-2")) {
+            // custom
+            return;
+        }
+        
+        SystemProperties.set(RAM_MINFREE_PROPERTY, newValue.toString());
+        updateRamMinfreeOptions();
+    }
+
+    private void updateZramSizeOptions() {
+        String value = SystemProperties.get(ZRAM_SIZE_PROPERTY, "0");
+        int index = mZramSize.findIndexOfValue(value);
+        if (index == -1) {
+            index = mZramSize.getEntryValues().length - 1;
+        }
+        mZramSize.setValueIndex(index);
+        mZramSize.setSummary(mZramSize.getEntries()[index]);
+    }
+
+    private void writeZramSizeOptions(Object newValue) {
+        String value = newValue.toString();
+    
+        if (value.contentEquals("-2")) {
+            // custom
+            return;
+        }
+        
+        SystemProperties.set(ZRAM_SIZE_PROPERTY, value);
+        
+        if (value.contentEquals("0")) {
+            SystemProperties.set(ZRAM_ENABLE_PROPERTY, "false");
+        } else {
+            SystemProperties.set(ZRAM_ENABLE_PROPERTY, "true");
+        }
+        
+        updateZramSizeOptions();
+    }
+    
+    private void updateDozeBrightnessOptions() {
+        String value = SystemProperties.get(DOZE_BRIGHTNESS_PROPERTY, "-1");
+        int index = mDozeBrightness.findIndexOfValue(value);
+        if (index == -1) {
+            index = mDozeBrightness.getEntryValues().length - 1;
+        }
+        mDozeBrightness.setValueIndex(index);
+        mDozeBrightness.setSummary((mDozeBrightness.getEntries()[index]).toString().replace("%","%%"));
+    }
+
+    private void writeDozeBrightnessOptions(Object newValue) {
+        if (newValue.toString().contentEquals("-2")) {
+            // custom
+            return;
+        }
+        
+        SystemProperties.set(DOZE_BRIGHTNESS_PROPERTY, newValue.toString());
+        updateDozeBrightnessOptions();
+    }
+
     @Override
     public void onSwitchChanged(Switch switchView, boolean isChecked) {
         if (switchView != mSwitchBar.getSwitch()) {
@@ -1784,6 +1874,15 @@ public class DevelopmentSettings extends SettingsPreferenceFragment
             } else {
                 writeRootAccessOptions(newValue);
             }
+            return true;
+        } else if (preference == mRamMinfree) {
+            writeRamMinfreeOptions(newValue);
+            return true;
+        } else if (preference == mZramSize) {
+            writeZramSizeOptions(newValue);
+            return true;
+        } else if (preference == mDozeBrightness) {
+            writeDozeBrightnessOptions(newValue);
             return true;
         }
         return false;
