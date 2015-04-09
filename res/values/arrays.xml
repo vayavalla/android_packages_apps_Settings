@@ -1306,17 +1306,6 @@
         <item>-2</item>
     </string-array>
     
-    <!-- Array for kernel -->
-    <string-array name="kernel_oc_entries">
-        <item>@string/urom_generic_disabled</item>
-        <item>1.51-2.05 Ghz (gpu: 320Mhz)</item>
-    </string-array>
-
-    <string-array name="kernel_oc_values" translatable="false" >
-        <item>disabled</item>
-        <item>oc_ultra</item>
-    </string-array>
-
     <!-- Array for doze brightness -->
     <string-array name="doze_brightness_entries">
         <item>@string/urom_generic_default</item>

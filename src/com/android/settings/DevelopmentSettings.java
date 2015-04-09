@@ -175,9 +175,6 @@ public class DevelopmentSettings extends SettingsPreferenceFragment
     private static final String ZRAM_SIZE_PROPERTY = "persist.sys.zram_size";
     private static final String ZRAM_ENABLE_PROPERTY = "persist.sys.zram_enable";
     
-    private static final String KERNEL_OC_KEY = "kernel_oc";
-    private static final String KERNEL_OC_PROPERTY = "persist.kernel.oc";
-    
     private static final String DOZE_BRIGHTNESS_KEY = "doze_brightness";
     private static final String DOZE_BRIGHTNESS_PROPERTY = "persist.screen.doze_brightness";
     
@@ -260,7 +257,6 @@ public class DevelopmentSettings extends SettingsPreferenceFragment
     //urom
     private ListPreference mRamMinfree;
     private ListPreference mZramSize;
-    private ListPreference mKernelOc;
     private ListPreference mDozeBrightness;
     private ListPreference mLightbarMode;
     private ListPreference mMainkeysLayout;
@@ -407,7 +403,6 @@ public class DevelopmentSettings extends SettingsPreferenceFragment
         //urom
         mRamMinfree = addListPreference(RAM_MINFREE_KEY);
         mZramSize = addListPreference(ZRAM_SIZE_KEY);
-        mKernelOc = addListPreference(KERNEL_OC_KEY);
         mDozeBrightness = addListPreference(DOZE_BRIGHTNESS_KEY);
         mLightbarMode = addListPreference(LIGHTBAR_MODE_KEY);
         mMainkeysLayout = addListPreference(MAINKEYS_LAYOUT_KEY);
@@ -596,7 +591,6 @@ public class DevelopmentSettings extends SettingsPreferenceFragment
         //urom
         updateRamMinfreeOptions();
         updateZramSizeOptions();
-        updateKernelOcOptions();
         updateDozeBrightnessOptions();
         updateLightbarModeOptions();
         updateMainkeysLayoutOptions();
@@ -1403,22 +1397,6 @@ public class DevelopmentSettings extends SettingsPreferenceFragment
         updateZramSizeOptions();
     }
     
-    private void updateKernelOcOptions() {
-        String value = SystemProperties.get(KERNEL_OC_PROPERTY, "disabled");
-        int index = mKernelOc.findIndexOfValue(value);
-        
-        if (index == -1) {
-            index = 0;
-        }
-        mKernelOc.setValueIndex(index);
-        mKernelOc.setSummary(mKernelOc.getEntries()[index]);
-    }
-
-    private void writeKernelOcOptions(Object newValue) {
-        SystemProperties.set(KERNEL_OC_PROPERTY, newValue.toString());
-        updateKernelOcOptions();
-    }
-    
     private void updateDozeBrightnessOptions() {
         String value = SystemProperties.get(DOZE_BRIGHTNESS_PROPERTY, "-1");
         int index = mDozeBrightness.findIndexOfValue(value);
@@ -1711,9 +1689,6 @@ public class DevelopmentSettings extends SettingsPreferenceFragment
             return true;
         } else if (preference == mZramSize) {
             writeZramSizeOptions(newValue);
-            return true;
-        } else if (preference == mKernelOc) {
-            writeKernelOcOptions(newValue);
             return true;
         } else if (preference == mDozeBrightness) {
             writeDozeBrightnessOptions(newValue);

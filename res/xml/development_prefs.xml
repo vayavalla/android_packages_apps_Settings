@@ -337,13 +337,6 @@
             android:entryValues="@array/zram_size_values" />
 
         <ListPreference
-            android:key="kernel_oc"
-            android:title="@string/kernel_oc_title"
-            android:persistent="false"
-            android:entries="@array/kernel_oc_entries"
-            android:entryValues="@array/kernel_oc_values" />
-
-        <ListPreference
             android:key="doze_brightness"
             android:title="@string/doze_brightness_title"
             android:persistent="false"

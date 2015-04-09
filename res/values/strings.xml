@@ -6060,9 +6060,6 @@
    <!-- zram -->
    <string name="zram_size_title">Swap/zram (*)</string>
    
-   <!-- kernel -->
-   <string name="kernel_oc_title">Overclocking (**)</string>
-   
    <!-- lightbar -->
    <string name="lightbar_mode_title">Light bar (*)</string>
    
