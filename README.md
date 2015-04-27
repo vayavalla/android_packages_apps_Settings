@@ -1,1 +1,0 @@
-platform/packages/apps/Settings
