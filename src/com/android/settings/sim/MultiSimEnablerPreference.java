@@ -48,6 +48,7 @@ import android.provider.Settings;
 import android.telephony.SubscriptionManager;
 import android.telephony.SubscriptionInfo;
 import android.telephony.TelephonyManager;
+import android.text.TextUtils;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -126,8 +127,11 @@ public class MultiSimEnablerPreference extends SwitchPreference implements
 
         logd("update() isSubValid "  + isSubValid);
         if (isSubValid) {
+            String number = TextUtils.isEmpty(mSir.getNumber())
+                    ? getContext().getString(R.string.sim_no_number_set)
+                    : mSir.getNumber();
             setSummary(getContext().getString(R.string.sim_settings_summary,
-                    getSimDisplayName(), mSir.getNumber()));
+                    getSimDisplayName(), number));
             setIcon(new BitmapDrawable(getContext().getResources(),
                     mSir.createIconBitmap(getContext())));
 
@@ -195,7 +199,7 @@ public class MultiSimEnablerPreference extends SwitchPreference implements
             public void onClick(DialogInterface dialog, int whichButton) {
                 mSir.setDisplayName(nameText.getText());
                 mSubscriptionManager.setDisplayName(mSir.getDisplayName().toString(),
-                        mSir.getSubscriptionId());
+                        mSir.getSubscriptionId(), SubscriptionManager.NAME_SOURCE_USER_INPUT);
 
                 final int tintSelected = tintSpinner.getSelectedItemPosition();
                 int subscriptionId = mSir.getSubscriptionId();
