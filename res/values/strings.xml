@@ -6058,7 +6058,7 @@
    <string name="ram_minfree_automatic">Automatic</string>
 
    <!-- zram -->
-   <string name="zram_size_title">Swap/zram (*)</string>
+   <string name="zram_size_title">Swap in memory (*)</string>
    
    <!-- lightbar -->
    <string name="lightbar_mode_title">Light bar (*)</string>
