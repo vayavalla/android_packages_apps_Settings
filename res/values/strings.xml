@@ -6062,6 +6062,8 @@
    
    <!-- lightbar -->
    <string name="lightbar_mode_title">Light bar (*)</string>
+   <string name="lightbar_flash_title">Light bar notification (*)</string>
+   <string name="lightbar_flash_summary">Flash on incoming notification</string>
    
    <!-- hw keys layout -->
    <string name="mainkeys_layout_title">Physical Keys Layout (*)</string>
