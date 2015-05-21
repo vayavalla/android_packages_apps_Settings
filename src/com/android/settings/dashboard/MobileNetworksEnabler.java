@@ -83,8 +83,10 @@ public class MobileNetworksEnabler extends GenericSwitchToggle  {
     }
 
     private void updateState() {
-        setEnabled(mTelephonyManager.getDataState() != TelephonyManager.DATA_UNKNOWN);
-        setChecked(mTelephonyManager.getDataEnabled());
+        final boolean simReady = mTelephonyManager.getSimState() == TelephonyManager.SIM_STATE_READY
+                || mTelephonyManager.getPhoneType() == TelephonyManager.PHONE_TYPE_CDMA;
+        setEnabled(simReady && mTelephonyManager.getDataState() != TelephonyManager.DATA_UNKNOWN);
+        setChecked(simReady && mTelephonyManager.getDataEnabled());
     }
 
     @Override
