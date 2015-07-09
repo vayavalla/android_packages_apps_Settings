@@ -115,6 +115,7 @@
     <!-- Profiles - system settings -->
     <string name="profile_system_settings_title">System settings</string>
     <string name="profile_lockmode_title">Lock screen mode</string>
+    <string name="profile_lockmode_policy_disabled_summary">This profile option is disabled by a device administrator policy</string>
     <string name="profile_lockmode_insecure_summary">Don\'t ask for PIN or password</string>
     <string name="profile_lockmode_disabled_summary">Disable lock screen</string>
     <string name="profile_airplanemode_title">Airplane mode</string>
@@ -142,6 +143,7 @@
     <string name="hardware_keys_menu_key_title">Menu button</string>
     <string name="hardware_keys_assist_key_title">Search button</string>
     <string name="hardware_keys_appswitch_key_title">Recents button</string>
+    <string name="hardware_keys_camera_key_title">Camera button</string>
     <string name="hardware_keys_volume_keys_title">Volume buttons</string>
     <string name="hardware_keys_short_press_title">Short press action</string>
     <string name="hardware_keys_long_press_title">Long press action</string>
@@ -155,6 +157,10 @@
     <string name="hardware_keys_action_launch_camera">Launch camera</string>
     <string name="hardware_keys_action_sleep">Turn screen off</string>
     <string name="hardware_keys_action_last_app">Last app</string>
+    <string name="camera_sleep_on_release_title">Screen peek</string>
+    <string name="camera_sleep_on_release_summary">A half press will keep the screen on only while the button is held down</string>
+    <string name="camera_launch_title">Launch camera</string>
+    <string name="camera_launch_summary">A longpress and release will launch camera</string>
     <string name="volbtn_music_controls_title">Playback control</string>
     <string name="volbtn_music_controls_summary">When the screen is off, long pressing the volume keys will seek music tracks</string>
     <string name="volbtn_cursor_control_title">Keyboard cursor control</string>
@@ -267,10 +273,12 @@
     <string name="display_rotation_180_title">180 degrees</string>
     <string name="display_rotation_270_title">270 degrees</string>
 
-    <!--- Sms security limit -->
+    <!-- Sms security limit -->
     <string name="app_security_title">App security</string>
     <string name="sms_security_check_limit_title">SMS message limit</string>
-    <string name="sms_security_check_limit_summary">Apps can send %d messages in 30 minutes before requiring confirmation</string>
+    <string name="sms_security_check_limit_summary">Apps can send %d messages in 1 minute before requiring confirmation</string>
+    <string name="sms_security_check_limit_summary_none">Apps are not allowed to send any messages without confirmation</string>
+    <string name="sms_security_check_limit_none">None</string>
 
     <string name="spam_added_title">Added %1$s</string>
     <string name="spam_last_blocked_title">Last blocked %1$s</string>
@@ -426,11 +434,6 @@
     <string name="status_bar_battery_percentage_default">Hidden</string>
     <string name="status_bar_battery_percentage_text_inside">Inside the icon</string>
     <string name="status_bar_battery_percentage_text_next">Next to the icon</string>
-
-    <!-- Status bar - MSIM tweaks-->
-    <string name="status_bar_show_unused_sims_title">Show empty SIM icons</string>
-    <string name="status_bar_show_unused_sims_title_summary_off">Hide icons of unused SIM slots</string>
-    <string name="status_bar_show_unused_sims_title_summary_on">Indicate unused SIM slots</string>
 
     <!-- Notification light dialogs -->
     <string name="edit_light_settings">Edit light settings</string>
@@ -788,9 +791,7 @@
     <!-- SIM card lock settings screen, toast displayed on PIN1 disable: -->
     <string name="sim_pin_disabled">PIN1 disabled</string>
 
-    <string name="subs_settings">SIM card status</string>
-
-    <!-- string resources for SD card, USB OTG & UICC features -->
+    <!-- string resources for USB OTG & UICC features -->
     <string name="storage_usb">USB storage</string>
     <string name="storage_uicc">UICC storage</string>
     <string name="sdcard_eject" product="default">Unmount SD card</string>
@@ -895,7 +896,7 @@
 
     <string name="usb_sdcard_title">Mass storage (UMS)</string>
     <string name="usb_sdcard_summary">Lets you transfer files between your computer and SD card by mounting it as a flash device</string>
-    <string name="usb_not_connected">USB not connected</string>
+    <string name="usb_not_connected">USB is now disconnected</string>
 
     <string name="external_storage_turn_on">External storage has been turned on</string>
     <string name="external_storage_turn_off">External storage has been turned off</string>
@@ -927,50 +928,14 @@
     <string name="select_custom_app_title">Select custom app</string>
     <string name="select_custom_activity_title">Select custom activity</string>
 
-    <!-- Performance settings -->
-    <string name="performance_settings_title">Performance</string>
-
-    <!-- Performance Settings : I/O scheduler settings title -->
-    <string name="io_scheds_title">I/O scheduler</string>
-
-    <!-- Performance Settings : I/O scheduler settings sub items -->
-    <string name="io_sched_title">I/O scheduler</string>
-    <string name="io_sched_summary" translatable="false">%S</string>
-
-    <!-- Performance Settings : Performance profile settings -->
+    <!-- Battery : Automatic performance profiles -->
+    <string name="autoperf_title">Enable per-app profiles</string>
+    <string name="autoperf_summary">Automatically choose an appropriate battery mode for various apps</string>
     <string name="perf_profile_title">Battery mode</string>
 
-    <!-- Performance : Force high-end graphics -->
+    <!-- Development : Force high-end graphics -->
     <string name="pref_force_highend_gfx_title">Force high-end graphics</string>
     <string name="pref_force_highend_gfx_summary">Enables high-end visual effects such as transparent status/navigation bar (requires reboot)</string>
-
-    <!-- Performance Settings : Warning dialog -->
-    <string name="performance_settings_warning_title">Proceed with caution</string>
-    <string name="performance_settings_warning">These settings are experimental and any applied changes have the potential to cause instability, crashes, data loss or hardware failures.\n\nWe request that you do not file bug reports if any settings are changed from their defaults.</string>
-
-    <!-- Performance Settings : Set on boot option -->
-    <string name="performance_set_on_boot">Set on boot</string>
-    <string name="performance_set_on_boot_summary">Restore the settings on boot</string>
-
-    <!-- Performance Settings : Processor Settings -->
-    <!-- Performance Settings : Processor settings title -->
-    <string name="processor_title">Processor</string>
-
-    <!-- Performance Settings : Processor settings sub items -->
-    <string name="cpu_cur_freq_title">Current CPU frequency</string>
-    <string name="cpu_governors_title">CPU governor</string>
-    <string name="cpu_governors_summary" translatable="false">%S</string>
-    <string name="cpu_min_freq_title">Minimum CPU frequency</string>
-    <string name="cpu_min_freq_summary" translatable="false">%s</string>
-    <string name="cpu_max_freq_title">Maximum CPU frequency</string>
-    <string name="cpu_max_freq_summary" translatable="false">%s</string>
-
-    <!-- Automatic performance profiles -->
-    <string name="autoperf_title">Enable per-app profiles</string>
-    <string name="autoperf_summary">Automatically choose an appropriate performance profile for various apps</string>
-
-    <!-- Performance menu, graphics options category -->
-    <string name="graphics_title">Graphics and rendering</string>
 
     <!-- EdgeGesture service -->
     <string name="edge_gesture_service_title">Block gesture touch events</string>
@@ -1048,6 +1013,12 @@
     <string name="qs_tile_usb_tether">USB tethering</string>
     <string name="qs_tile_heads_up">Heads up</string>
     <string name="qs_tile_ambient_display">Ambient display</string>
+    <string name="qs_tile_sync">Sync</string>
+
+    <string name="qs_dynamic_tile_next_alarm">Next alarm</string>
+    <string name="qs_dynamic_tile_ime_selector">IME selector</string>
+    <string name="qs_dynamic_tile_su">Root access</string>
+    <string name="qs_dynamic_tile_adb" translatable="false">ADB</string>
 
     <string name="qs_main_tiles_title">Enlarge first row</string>
     <string name="qs_main_tiles_summary_on">Two main tiles on the first row</string>
@@ -1074,6 +1045,9 @@
     <string name="wifi_ibss_freq_title">Channel / Frequency</string>
     <string name="wifi_channel">Channel</string>
     <string name="wifi_mhz">MHz</string>
+
+    <!-- WiFi auto-configure priorities -->
+    <string name="wifi_auto_config_priorities">Automatic priority</string>
 
     <!-- About phone settings screen, setting option dialog title to show regulatory information [CHAR LIMIT=25] -->
     <string name="regulatory_information_dialog_title" translatable="false">@string/regulatory_information</string>
@@ -1159,7 +1133,7 @@
     <string name="category_interface">Interface</string>
     <string name="category_calibration">Calibration</string>
     <string name="display_and_lights">Display &amp; lights</string>
-    <string name="notification_manager">Notification manager</string>
+    <string name="notification_manager">Notifications</string>
     <string name="lockscreen_settings">Lock screen</string>
     <string name="category_lights">Lights</string>
     <string name="power_usage_history_title">Battery usage</string>
@@ -1234,4 +1208,134 @@
     <string name="lock_to_cyanogen_master_clear_warning">Device Protection is enabled. Please disable to continue resetting your device.</string>
 
     <string name="bluetooth_pan_profile_summary_use_for_error">Connection error; is Bluetooth tethering enabled on this device?</string>
+
+    <!-- MSIM SIM status -->
+    <string name="sim_card_status_title">SIM %d status</string>
+    <string name="sim_card_lock_settings_title">SIM %d lock settings</string>
+    <string name="sim_card_summary_empty">SIM not inserted</string>
+    <string name="sim_mobile_network_settings_category_title">Mobile network settings</string>
+    <string name="sim_mobile_network_settings_title">SIM %d settings</string>
+
+    <!-- Factory reset strings -->
+    <string name="factory_reset_instructions_title">Personal data &amp; apps</string>
+    <string name="factory_reset_instructions_summary">This will erase all your accounts, apps, app data, and system settings on this device</string>
+    <string name="factory_reset_personal_content">Personal content</string>
+    <string name="factory_reset_erase_stored_content">Erase stored content</string>
+    <string name="factory_reset_erase_stored_content_summary">Erase music, photos, videos, and other user data stored on this device</string>
+    <string name="factory_reset_erase_stored_content_summary_forced">Erase music, photos, videos, and other user data stored on this device. \n\n<b>Content cannot be saved due to device encryption.</b></string>
+    <string name="factory_reset_erase_sd_card">Format SD card</string>
+    <string name="factory_reset_erase_sd_card_summary">Erase all data on the SD card, including music and photos</string>
+    <string name="factory_reset_warning_text_reset_now">RESET NOW</string>
+    <string name="factory_reset_warning_text_message">All your accounts, apps, app data, and system settings will be removed from this device. This cannot be reversed.</string>
+
+    <!-- Wi-Fi region code -->
+    <string name="wifi_setting_countrycode_title">Wi\u2011Fi region code</string>
+    <!-- Wi-Fi settings screen, setting summary for setting the wifi frequency band [CHAR LIMIT=50]-->
+    <string name="wifi_setting_countrycode_summary">Specify the region code for Wi\u2011Fi</string>
+    <!-- Wi-Fi settings screen, error message when the frequency band could not be set [CHAR LIMIT=50]. -->
+    <string name="wifi_setting_countrycode_error">There was a problem setting the region code.</string>
+
+    <!-- Wi-Fi region countries -->
+    <string name="wifi_countrycode_entries_us">United States</string>
+    <string name="wifi_countrycode_entries_ca">Canada, Taiwan</string>
+    <string name="wifi_countrycode_entries_de">Germany</string>
+    <string name="wifi_countrycode_entries_gb">Europe</string>
+    <string name="wifi_countrycode_entries_jp">Japan, Russia</string>
+    <string name="wifi_countrycode_entries_au">Australia</string>
+    <string name="wifi_countrycode_entries_cn">China</string>
+    <string name="wifi_countrycode_entries_kr">Korea</string>
+    <string name="wifi_countrycode_entries_tr">South Africa, Turkey</string>
+    <string name="wifi_countrycode_entries_sg">Israel, Singapore</string>
+    <string name="wifi_countrycode_entries_br">Brazil</string>
+    <string name="wifi_countrycode_entries_in">India</string>
+
+    <!-- FINGERPRINT -->
+    <!-- Summary for "Configure lockscreen" when security Fingerprint is enabled [CHAR LIMIT=45] -->
+    <string name="unlock_set_unlock_mode_fingerprint">Fingerprint</string>
+    <!-- Title for preference that guides the user through creating a fingerprint [CHAR LIMIT=22] -->
+    <string name="unlock_set_unlock_fingerprint_title">Fingerprint</string>
+    <!-- List item title to add a new fingerprint in fingerprint list screen -->
+    <string name="fingerprint_item_add_new_fingerprint">Add new fingerprint</string>
+    <!-- Title for preference in fingerprint lockscreen settings, takes user to fingerprint list -->
+    <string name="fingerprint_manage_fingerprints">Manage fingerprints</string>
+    <!-- Summary for preference in fingerprint lockscreen settings, takes user to fingerprint list -->
+    <string name="fingerprint_manage_fingerprints_summary">Add or remove enrolled fingerprints</string>
+    <!-- Info explaining the backup lock which is used for fingerprint -->
+    <string name="unlock_backup_fingerprint_info_summary">If you cannot use your finger, how do you want to unlock?</string>
+    <!-- Dialog title for renaming your fingerprint -->
+    <string name="fingerprint_dialog_title_rename">Edit fingerprint</string>
+    <!-- EditText label for renaming your fingerprint in rename dialog -->
+    <string name="fingerprint_dialog_name_label">Fingerprint name</string>
+    <!-- Title for dialog that shows when the user cannot add anymore fingers -->
+    <string name="fingerprint_dialog_title_max_fingers_reached">Max fingerprints reached</string>
+    <!-- Message for dialog that shows when the user cannot add anymore fingers -->
+    <string name="fingerprint_dialog_msg_max_fingers_reached">You can only enroll <xliff:g id="finger" example="5 fingerprints">%d</xliff:g> fingerprints. Delete an existing fingerprint.</string>
+    <!-- Title for number of finger prints enrolled -->
+    <string name="fingerprint_title_manage_fingerprints">Manage fingerprints <xliff:g id="finger">%d</xliff:g>/<xliff:g id="max">%d</xliff:g></string>
+    <!-- Description for managing fingerprints -->
+    <string name="manage_fingerprints_description">Fingerprints allow you to quickly unlock your phone, confirm purchases and take photos.</string>
+    <!-- Fingerprint enrollment introduction title -->
+    <string name="fingerprint_enrollment_introduction_title">Find your sensor</string>
+    <!-- Fingerprint enrollment introduction instructions -->
+    <string name="fingerprint_enrollment_introduction_instructions">The fingerprint sensor is located on the front or back of your phone.</string>
+    <!-- Fingerprint enrollment scan fingerprint title -->
+    <string name="fingerprint_enrollment_scan_title">Hold for 3 seconds</string>
+    <!-- Fingerprint enrollment scan fingerprint instructions -->
+    <string name="fingerprint_enrollment_scan_instructions">Place your index finger on the fingerprint sensor to begin setup. Lift your finger once you feel a vibration.</string>
+    <!-- Fingerprint enrollment error title during first step only -->
+    <string name="fingerprint_enrollment_error_title_wrong_sensor">Please try again</string>
+    <!-- Fingerprint enrollment error title during all other steps -->
+    <string name="fingerprint_enrollment_error_title">Oops. Try again</string>
+    <!-- Fingerprint enrollment error message -->
+    <string name="fingerprint_enrollment_error_message">Place your finger firmly on the fingerprint sensor to ensure an accurate scan. Also make sure you are using the same finger as before. Lift your finger once you feel a vibration.</string>
+    <!-- Fingerprint enrollment error instructions -->
+    <string name="fingerprint_enrollment_scan_instructions">Place your finger firmly on the fingerprint sensor to ensure an accurate scan. Lift your finger once you feel a vibration.</string>
+    <!-- Fingerprint enrollment half way break title -->
+    <string name="fingerprint_enrollment_break_title">Continue with current grip</string>
+    <!-- Fingerprint enrollment introduction instructions -->
+    <string name="fingerprint_enrollment_break_instructions">Keep going to capture the edges of your print. Lift your finger once you feel a vibration.</string>
+    <!-- Fingerprint enrollment finished title -->
+    <string name="fingerprint_enrollment_finished_title">Fingerprint added!</string>
+    <!-- Fingerprint enrollment finished instructions -->
+    <string name="fingerprint_enrollment_finished_message">Your fingerprint can now be used to unlock your screen or take selfies using your camera.</string>
+    <!-- Next button title for finding sensor -->
+    <string name="fingerprint_enrollment_found_it_label">Found it</string>
+    <!-- Next button title for finding sensor -->
+    <string name="fingerprint_enrollment_add_another_label">Add another</string>
+    <!-- Next button title for finding sensor -->
+    <string name="fingerprint_enrollment_done_label">Done</string>
+    <!-- Wrong fingerprint sensor dialog title -->
+    <string name="fingerprint_dialog_title_wrong_sensor">Whoops, that\'s not your sensor</string>
+    <!-- Wrong fingerprint sensor dialog message -->
+    <string name="fingerprint_dialog_msg_wrong_sensor">Use the fingerprint sensor on the front or back of your phone</string>
+    <!-- Failed fingerprint enrollment dialog title -->
+    <string name="fingerprint_dialog_title_failed_enrollment">Unable to read fingerprint</string>
+    <!-- Failed fingerprint enrollment dialog message -->
+    <string name="fingerprint_dialog_msg_failed_enrollment">Try using a different finger. This fingerprint could not be read.</string>
+    <!-- Failed fingerprint enrollment button label -->
+    <string name="fingerprint_enrollment_restart_label">Restart</string>
+    <!-- Successful scan title for first successful scan -->
+    <string name="fingerprint_successful_scan_title_first">Perfect! Now repeat</string>
+    <!-- Successful scan title for second to last successful scan -->
+    <string name="fingerprint_successful_scan_final">One more time please</string>
+    <!-- Successful scan title for all other successful scans -->
+    <string name="fingerprint_successful_scan_title_1">You’ve got it! Keep going</string>
+    <string name="fingerprint_successful_scan_title_2">Great! And again</string>
+    <string name="fingerprint_successful_scan_title_3">Well done! Keep it up</string>
+    <string name="fingerprint_successful_scan_title_4">Just a few more times</string>
+    <string name="fingerprint_successful_scan_title_5">You’re doing great! And again</string>
+    <string name="fingerprint_successful_scan_title_6">Almost there</string>
+
+    <!-- Menu label for reset the battery stats -->
+    <string name="menu_stats_reset">Reset stats</string>
+    <!-- Reset stats confirmation dialog's message -->
+    <string name="reset_stats_msg">Battery history stats are going to be reset</string>
+
+    <!-- Dock battery not present message -->
+    <string name="dock_battery_not_present">Dock battery not present</string>
+
+    <!-- [CHAR_LIMIT=20] Battery use screen. Battery status shown in chart label when charging on Dock AC. -->
+    <string name="battery_info_status_charging_dock_ac">Charging on Dock AC</string>
+    <!-- [CHAR_LIMIT=20] Battery use screen. Battery status shown in chart label when charging over Dock USB. -->
+    <string name="battery_info_status_charging_dock_usb">Charging over Dock USB</string>
 </resources>

@@ -82,6 +82,7 @@
   <string name="profile_choose_app">选择应用</string>
   <string name="profile_system_settings_title">系统设置</string>
   <string name="profile_lockmode_title">锁屏模式</string>
+  <string name="profile_lockmode_policy_disabled_summary">此配置文件选项已由设备管理员策略禁用</string>
   <string name="profile_lockmode_insecure_summary">不请求 PIN 码或密码</string>
   <string name="profile_lockmode_disabled_summary">禁用锁屏</string>
   <string name="profile_airplanemode_title">飞行模式</string>
@@ -116,7 +117,7 @@
   <string name="hardware_keys_action_launch_camera">启动相机</string>
   <string name="hardware_keys_action_sleep">关闭屏幕</string>
   <string name="hardware_keys_action_last_app">上次运行应用</string>
-  <string name="volbtn_music_controls_title">音量键音乐控制</string>
+  <string name="volbtn_music_controls_title">播放控制</string>
   <string name="volbtn_music_controls_summary">屏幕关闭时，长按音量键将改变音乐曲目</string>
   <string name="volbtn_cursor_control_title">键盘光标控制</string>
   <string name="volbtn_cursor_control_off">禁用</string>
@@ -124,10 +125,12 @@
   <string name="volbtn_cursor_control_on_reverse">音量+/-光标右/左移动</string>
   <string name="swap_volume_buttons_title">重新调整</string>
   <string name="swap_volume_buttons_summary">旋转屏幕时交换音量键的布局</string>
+  <string name="volume_keys_control_ring_stream_title">音量键控制铃声音量</string>
+  <string name="volume_keys_control_ring_stream_summary">如果启用，音量键将控制铃声音量。如果禁用，音量键将控制媒体音量。</string>
   <string name="power_end_call_title">结束通话</string>
   <string name="power_end_call_summary">按下电源按钮将结束当前通话</string>
   <string name="button_wake_title">唤醒设备</string>
-  <string name="button_wake_summary">覆盖重放控制</string>
+  <string name="button_wake_summary">覆盖播放控制</string>
   <string name="home_answer_call_title">接听电话</string>
   <string name="home_answer_call_summary">按 Home 键将接听当前来电</string>
   <string name="button_backlight_title">背光灯</string>
@@ -206,7 +209,9 @@
   <string name="display_rotation_270_title">270 度</string>
   <string name="app_security_title">应用安全</string>
   <string name="sms_security_check_limit_title">短信限制</string>
-  <string name="sms_security_check_limit_summary">应用在 30 分钟内发送 %d 条信息后需要用户认可才能继续</string>
+  <string name="sms_security_check_limit_summary">应用在 1 分钟内发送 %d 条信息后需要用户认可才能继续</string>
+  <string name="sms_security_check_limit_summary_none">未经确认时应用不允许发送任何短信</string>
+  <string name="sms_security_check_limit_none">无</string>
   <string name="spam_added_title">已添加 %1$s</string>
   <string name="spam_last_blocked_title">最后一次被阻止： %1$s</string>
   <string name="block_notifications_title">通知过滤</string>
@@ -301,9 +306,6 @@
   <string name="status_bar_battery_percentage_default">隐藏</string>
   <string name="status_bar_battery_percentage_text_inside">图标内</string>
   <string name="status_bar_battery_percentage_text_next">图标旁</string>
-  <string name="status_bar_show_unused_sims_title">显示空 SIM 卡图标</string>
-  <string name="status_bar_show_unused_sims_title_summary_off">隐藏未使用的 SIM 卡槽图标</string>
-  <string name="status_bar_show_unused_sims_title_summary_on">显示未使用的 SIM 卡槽</string>
   <string name="edit_light_settings">编辑指示灯设置</string>
   <string name="pulse_speed_title">呼吸长度与速度</string>
   <string name="default_time">正常</string>
@@ -570,7 +572,6 @@
   <string name="sim_pin_attempts">\n剩余次数：</string>
   <string name="sim_pin_enabled">PIN1 已启用</string>
   <string name="sim_pin_disabled">PIN1 已禁用</string>
-  <string name="subs_settings">SIM 卡状态</string>
   <string name="storage_usb">USB 存储</string>
   <string name="storage_uicc">UICC 存储</string>
   <string name="sdcard_eject" product="default">卸载 SD 卡</string>
@@ -647,6 +648,7 @@
   <string name="usb_charging_summary">禁用通过 USB 接口的全部数据传输</string>
   <string name="usb_sdcard_title">大容量存储 (UMS)</string>
   <string name="usb_sdcard_summary">挂载 SD 卡为闪存设备，使您可以在计算机和 SD 卡之间传输文件</string>
+  <string name="usb_not_connected">USB 目前已断开连接</string>
   <string name="external_storage_turn_on">外部存储已打开</string>
   <string name="external_storage_turn_off">外部存储已关闭</string>
   <string name="stats_collection_title">统计数据收集</string>
@@ -731,6 +733,11 @@
   <string name="qs_tile_screen_timeout">屏幕超时</string>
   <string name="qs_tile_usb_tether">USB 共享网络</string>
   <string name="qs_tile_heads_up">浮动通知</string>
+  <string name="qs_tile_ambient_display">环境显示</string>
+  <string name="qs_tile_sync">同步</string>
+  <string name="qs_dynamic_tile_next_alarm">下一个闹铃</string>
+  <string name="qs_dynamic_tile_ime_selector">输入法选择器</string>
+  <string name="qs_dynamic_tile_su">Root 授权</string>
   <string name="qs_main_tiles_title">扩大第一行</string>
   <string name="qs_main_tiles_summary_on">第一行两个主要瓷块</string>
   <string name="qs_main_tiles_summary_off">每行三个瓷块</string>
@@ -745,6 +752,7 @@
   <string name="wifi_ibss_freq_title">频带/频率</string>
   <string name="wifi_channel">频带</string>
   <string name="wifi_mhz">MHz</string>
+  <string name="wifi_auto_config_priorities">自动优先</string>
   <string name="maximum_head_level">头部：%1$s 瓦特/公斤</string>
   <string name="maximum_body_level">身体：%1$s 瓦特/公斤</string>
   <string name="ic_code_model">型号：%1$s</string>
@@ -774,6 +782,7 @@
   <string name="dialog_title_lcd_density">LCD 密度</string>
   <string name="lcd_density_value_format">%d DPI</string>
   <string name="lcd_density_default_value_format">%d DPI (默认值)</string>
+  <string name="restarting_ui">正在重启界面\u2026</string>
   <string name="stylus_icon_enabled_title">使用触控笔时显示光标</string>
   <string name="stylus_icon_enabled_summary">使用触控笔悬停或书写时显示指示光标</string>
   <string name="gestures_settings_title">触控笔手势</string>
@@ -805,7 +814,7 @@
   <string name="category_interface">界面</string>
   <string name="category_calibration">校准</string>
   <string name="display_and_lights">显示 &amp; 指示灯</string>
-  <string name="notification_manager">通知管理器</string>
+  <string name="notification_manager">通知</string>
   <string name="lockscreen_settings">锁屏</string>
   <string name="category_lights">指示灯</string>
   <string name="power_usage_history_title">电量使用情况</string>
@@ -814,6 +823,9 @@
   <string name="sim_ringtone_title">SIM 卡 %d 铃声</string>
   <string name="interruptions_ignore_while_media_title">阻止音频回避</string>
   <string name="interruptions_ignore_while_media_summary">当通知到达时，不要降低媒体播放音量</string>
+  <string name="none_is_silent_title">永不静音闹钟</string>
+  <string name="none_is_silent_summary">静音模式下闹钟总是响铃</string>
+  <string name="allow_lights_title">允许通知指示灯</string>
   <string name="live_display_summary">基于时间和环境条件来优化您的屏幕以改善可读性和减少眼睛疲劳</string>
   <string name="live_display_mode">显示模式</string>
   <string name="live_display_color_temperature_title">色温</string>
@@ -853,4 +865,24 @@
   <string name="lock_to_cyanogen_create_account_msg">即使设备被恢复出厂设置，也可以被 Cyanogen OS 帐户密码所保护。您将需要创建一个 Cyanogen OS 帐户。</string>
   <string name="lock_to_cyanogen_disable_msg">如果您的手机被盗，禁用此功能将会使得未经授权的用户重置您的手机为出厂默认值。您的个人数据可能无法被保护。您确定要禁用此功能？</string>
   <string name="lock_to_cyanogen_master_clear_warning">设备保护已启用。请在重设您的设备前先将其禁用。</string>
+  <string name="bluetooth_pan_profile_summary_use_for_error">连接错误；是否在该设备上启用了蓝牙网络共享？</string>
+  <string name="sim_card_status_title">SIM 卡 %d 状态</string>
+  <string name="sim_card_lock_settings_title">SIM 卡 %d 锁设置</string>
+  <string name="sim_card_summary_empty">SIM 卡没有插入</string>
+  <string name="sim_mobile_network_settings_category_title">移动网络设置</string>
+  <string name="sim_mobile_network_settings_title">SIM 卡 %d 设置</string>
+  <string name="factory_reset_instructions_title">个人数据 &amp; 应用</string>
+  <string name="factory_reset_instructions_summary">这将删除此设备上所有的帐户、 应用、 应用数据和系统设置</string>
+  <string name="factory_reset_personal_content">个人内容</string>
+  <string name="factory_reset_erase_stored_content">擦除已存储的内容</string>
+  <string name="factory_reset_erase_stored_content_summary">擦除此设备上的音乐、照片、视频和其他用户数据。</string>
+  <string name="factory_reset_erase_stored_content_summary_forced">擦除音乐、照片、视频，并且存储在此设备上的其他用户数据。
+\n\n<b>由于设备加密，将无法保存内容。</b></string>
+  <string name="factory_reset_erase_sd_card">格式化 SD 卡</string>
+  <string name="factory_reset_erase_sd_card_summary">擦除 SD 卡上的所有数据，包括音乐和照片</string>
+  <string name="factory_reset_warning_text_reset_now">立即重置</string>
+  <string name="factory_reset_warning_text_message">您的所有帐户、应用、应用数据和系统设置将会从该设备上删除。此操作不可撤销。</string>
+  <string name="wifi_setting_countrycode_title">Wi\u2011Fi 区域码</string>
+  <string name="wifi_setting_countrycode_summary">为 Wi\u2011Fi 指定区域码</string>
+  <string name="wifi_setting_countrycode_error">设置区域码时遇到了问题。</string>
 </resources>

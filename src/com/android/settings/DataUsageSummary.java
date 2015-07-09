@@ -587,9 +587,9 @@ public class DataUsageSummary extends HighlightingFragment implements Indexable 
                 if (TelephonyManager.getDefault().getPhoneCount() > 1) {
                     intent.setClassName("com.android.phone",
                             "com.android.phone.msim.SelectSubscription");
-                    intent.putExtra(SelectSubscription.PACKAGE,
+                    intent.putExtra("PACKAGE",
                              "com.android.phone");
-                    intent.putExtra(SelectSubscription.TARGET_CLASS,
+                    intent.putExtra("TARGET_CLASS",
                             "com.android.phone.MobileNetworkSettings");
                     intent.putExtra("TARGET_THEME", "Theme.Material.Settings");
                 } else {
@@ -614,8 +614,10 @@ public class DataUsageSummary extends HighlightingFragment implements Indexable 
         mDataEnabledView = null;
         mDisableAtLimitView = null;
 
-        mUidDetailProvider.clearCache();
-        mUidDetailProvider = null;
+        if (mUidDetailProvider != null) {
+            mUidDetailProvider.clearCache();
+            mUidDetailProvider = null;
+        }
 
         TrafficStats.closeQuietly(mStatsSession);
 

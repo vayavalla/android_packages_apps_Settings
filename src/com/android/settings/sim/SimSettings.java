@@ -17,6 +17,7 @@
 package com.android.settings.sim;
 
 import android.content.BroadcastReceiver;
+import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
@@ -37,6 +38,7 @@ import android.util.Log;
 import android.widget.Toast;
 
 import com.android.internal.telephony.Phone;
+import com.android.internal.telephony.PhoneConstants;
 import com.android.internal.telephony.TelephonyIntents;
 import com.android.settings.R;
 import com.android.settings.RestrictedSettingsFragment;
@@ -58,6 +60,7 @@ public class SimSettings extends RestrictedSettingsFragment implements Indexable
     private static final String DISALLOW_CONFIG_SIM = "no_config_sim";
     private static final String SIM_ENABLER_CATEGORY = "sim_enablers";
     private static final String SIM_ACTIVITIES_CATEGORY = "sim_activities";
+    private static final String MOBILE_NETWORK_CATEGORY = "mobile_network";
     private static final String KEY_CELLULAR_DATA = "sim_cellular_data";
     private static final String KEY_CALLS = "sim_calls";
     private static final String KEY_SMS = "sim_sms";
@@ -79,6 +82,7 @@ public class SimSettings extends RestrictedSettingsFragment implements Indexable
     private Preference mPrimarySubSelect = null;
 
     private List<MultiSimEnablerPreference> mSimEnablers = null;
+    private List<Preference> mMobileNetworkSettings = null;
 
     private SubscriptionInfo mCellularData = null;
     private SubscriptionInfo mCalls = null;
@@ -90,6 +94,7 @@ public class SimSettings extends RestrictedSettingsFragment implements Indexable
     private PhoneStateListener[] mPhoneStateListener;
     private boolean mDataDisableToastDisplayed = false;
     private SubscriptionManager mSubscriptionManager;
+    private boolean mHardcodeDefaultMobileNetworks = false;
 
     public SimSettings() {
         super(DISALLOW_CONFIG_SIM);
@@ -107,6 +112,9 @@ public class SimSettings extends RestrictedSettingsFragment implements Indexable
         if (mSubInfoList == null) {
             mSubInfoList = mSubscriptionManager.getActiveSubscriptionInfoList();
         }
+
+        mHardcodeDefaultMobileNetworks = getResources()
+                .getBoolean(R.bool.config_hardcodeDefaultMobileNetworks);
 
         mNumSlots = tm.getSimCount();
         mPhoneCount = TelephonyManager.getDefault().getPhoneCount();
@@ -184,15 +192,22 @@ public class SimSettings extends RestrictedSettingsFragment implements Indexable
         mPrimarySubSelect = (Preference) findPreference(KEY_PRIMARY_SUB_SELECT);
         final PreferenceCategory simEnablers =
                 (PreferenceCategory)findPreference(SIM_ENABLER_CATEGORY);
+        final PreferenceCategory mobileNetwork =
+                (PreferenceCategory) findPreference(MOBILE_NETWORK_CATEGORY);
 
         mAvailableSubInfos = new ArrayList<SubscriptionInfo>(mNumSlots);
         mSimEnablers = new ArrayList<MultiSimEnablerPreference>(mNumSlots);
+        mMobileNetworkSettings = new ArrayList<Preference>(mNumSlots);
         for (int i = 0; i < mNumSlots; ++i) {
             final SubscriptionInfo sir = findRecordBySlotId(i);
             if (mNumSlots > 1) {
-                mSimEnablers.add(i, new MultiSimEnablerPreference(
-                        getActivity(), sir, mHandler, i));
-                simEnablers.addPreference(mSimEnablers.get(i));
+                MultiSimEnablerPreference multiSimEnablerPreference =
+                        new MultiSimEnablerPreference(getActivity(), sir, mHandler, i);
+                mSimEnablers.add(multiSimEnablerPreference);
+                simEnablers.addPreference(multiSimEnablerPreference);
+                if (mHardcodeDefaultMobileNetworks && i == 0) {
+                    multiSimEnablerPreference.setExplicitlyDisabled(true);
+                }
             } else {
                 removePreference(SIM_ENABLER_CATEGORY);
             }
@@ -201,6 +216,18 @@ public class SimSettings extends RestrictedSettingsFragment implements Indexable
                 mNumSims++;
                 mAvailableSubInfos.add(sir);
             }
+
+            Intent mobileNetworkIntent = new Intent();
+            mobileNetworkIntent.setComponent(new ComponentName(
+                        "com.android.phone", "com.android.phone.MobileNetworkSettings"));
+            SubscriptionManager.putPhoneIdAndSubIdExtra(mobileNetworkIntent,
+                    i, sir != null ? sir.getSubscriptionId() : -1);
+            Preference mobileNetworkPref = new Preference(getActivity());
+            mobileNetworkPref.setTitle(
+                    getString(R.string.sim_mobile_network_settings_title, (i + 1)));
+            mobileNetworkPref.setIntent(mobileNetworkIntent);
+            mobileNetwork.addPreference(mobileNetworkPref);
+            mMobileNetworkSettings.add(mobileNetworkPref);
         }
     }
 
@@ -209,6 +236,7 @@ public class SimSettings extends RestrictedSettingsFragment implements Indexable
         mSubInfoList = mSubscriptionManager.getActiveSubscriptionInfoList();
         updateActivitesCategory();
         updateSimEnablers();
+        updateMobileNetworkSettings();
     }
 
     private void listen() {
@@ -422,10 +450,12 @@ public class SimSettings extends RestrictedSettingsFragment implements Indexable
             final Preference preference) {
         if (preference instanceof MultiSimEnablerPreference) {
             ((MultiSimEnablerPreference) preference).createEditDialog();
+            return true;
         }  else if (preference == mPrimarySubSelect) {
             startActivity(mPrimarySubSelect.getIntent());
+            return true;
         }
-        return true;
+        return false;
     }
 
     public void createDropDown(DropDownPreference preference) {
@@ -456,6 +486,10 @@ public class SimSettings extends RestrictedSettingsFragment implements Indexable
         for (int i = 0; i < subAvailableSize; ++i) {
             final SubscriptionInfo sir = mAvailableSubInfos.get(i);
             if(sir != null){
+                if (i > 0 && (keyPref.equals(KEY_CALLS) || keyPref.equals(KEY_SMS)) &&
+                        mHardcodeDefaultMobileNetworks) {
+                    continue;
+                }
                 simPref.addItem(sir.getDisplayName().toString(), sir);
             }
         }
@@ -549,6 +583,23 @@ public class SimSettings extends RestrictedSettingsFragment implements Indexable
         for (int i = 0; i < mSimEnablers.size(); ++i) {
             MultiSimEnablerPreference simEnabler = mSimEnablers.get(i);
             if (simEnabler != null) simEnabler.update();
+        }
+    }
+
+    private void updateMobileNetworkSettings() {
+        for (int i = 0; i < mMobileNetworkSettings.size(); i++) {
+            Preference preference = mMobileNetworkSettings.get(i);
+            if (preference != null) {
+                Intent intent = preference.getIntent();
+                int subId = intent.getIntExtra(PhoneConstants.SUBSCRIPTION_KEY,
+                        SubscriptionManager.INVALID_SUBSCRIPTION_ID);;
+                if (!SubscriptionManager.isValidSubscriptionId(subId)
+                        || !SubscriptionManager.isUsableSubIdValue(subId)) {
+                    preference.setEnabled(false);
+                } else {
+                    preference.setEnabled(true);
+                }
+            }
         }
     }
 
