@@ -44,6 +44,7 @@ import com.android.internal.os.PowerProfile;
 import com.android.settings.HelpUtils;
 import com.android.settings.R;
 import com.android.settings.SettingsActivity;
+import com.android.settings.util.FileUtils;
 
 import java.util.List;
 
@@ -61,10 +62,13 @@ public class PowerUsageSummary extends PreferenceFragment {
 
     private static final String BATTERY_HISTORY_FILE = "tmp_bat_history.bin";
 
+    private static final String FAST_CHARGE_FILE = "/sys/kernel/fast_charge/force_fast_charge";
+
     private static final int MENU_STATS_TYPE = Menu.FIRST;
     private static final int MENU_STATS_REFRESH = Menu.FIRST + 1;
     private static final int MENU_BATTERY_SAVER = Menu.FIRST + 2;
     private static final int MENU_HELP = Menu.FIRST + 3;
+    private static final int MENU_FAST_CHARGE = Menu.FIRST + 4;
 
     private UserManager mUm;
 
@@ -194,6 +198,14 @@ public class PowerUsageSummary extends PreferenceFragment {
         MenuItem batterySaver = menu.add(0, MENU_BATTERY_SAVER, 0, R.string.battery_saver);
         batterySaver.setShowAsAction(MenuItem.SHOW_AS_ACTION_NEVER);
 
+        String fastChargeState = FileUtils.readOneLine(FAST_CHARGE_FILE);
+        if (fastChargeState != null) {
+            MenuItem fastCharge = menu.add(0, MENU_FAST_CHARGE, 0, R.string.fast_charge);
+            fastCharge.setShowAsAction(MenuItem.SHOW_AS_ACTION_NEVER);
+            fastCharge.setCheckable(true);
+            fastCharge.setChecked(fastChargeState.contentEquals("1"));
+        }
+
         String helpUrl;
         if (!TextUtils.isEmpty(helpUrl = getResources().getString(R.string.help_url_battery))) {
             final MenuItem help = menu.add(0, MENU_HELP, 0, R.string.help_label);
@@ -221,6 +233,11 @@ public class PowerUsageSummary extends PreferenceFragment {
                 final SettingsActivity sa = (SettingsActivity) getActivity();
                 sa.startPreferencePanel(BatterySaverSettings.class.getName(), null,
                         R.string.battery_saver, null, null, 0);
+                return true;
+            case MENU_FAST_CHARGE:
+                if (FileUtils.writeLine(FAST_CHARGE_FILE, item.isChecked() ? "0" : "1")) {
+                    item.setChecked(!item.isChecked());
+                }
                 return true;
             default:
                 return false;
