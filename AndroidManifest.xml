@@ -146,6 +146,9 @@
             android:name="com.koushikdutta.superuser.SuReceiver"
             android:permission="android.permission.REPORT_SUPERUSER" />
 
+        <!-- Urom Settings -->
+        <activity android:name=".UromSettings" />
+
         <!-- Settings -->
 
         <activity android:name="Settings"

@@ -166,28 +166,6 @@ public class DevelopmentSettings extends SettingsPreferenceFragment
     private static final int REQUEST_CODE_ENABLE_OEM_UNLOCK = 0;
 
     private static String DEFAULT_LOG_RING_BUFFER_SIZE_IN_BYTES = "262144"; // 256K
-    
-    //urom
-    private static final String RAM_MINFREE_KEY = "ram_minfree";
-    private static final String RAM_MINFREE_PROPERTY = "persist.sys.ram_minfree";
-    
-    private static final String ZRAM_SIZE_KEY = "zram_size";
-    private static final String ZRAM_SIZE_PROPERTY = "persist.sys.zram_size";
-    private static final String ZRAM_ENABLE_PROPERTY = "persist.sys.zram_enable";
-    
-    private static final String DOZE_BRIGHTNESS_KEY = "doze_brightness";
-    private static final String DOZE_BRIGHTNESS_PROPERTY = "persist.screen.doze_brightness";
-    
-    private static final String LIGHTBAR_MODE_KEY = "lightbar_mode";
-    private static final String LIGHTBAR_MODE_PROPERTY = "persist.sys.lightbar_mode";
-    private static final String LIGHTBAR_FLASH_KEY = "lightbar_flash";
-    private static final String LIGHTBAR_FLASH_PROPERTY = "persist.sys.lightbar_flash";
-
-    private static final String MAINKEYS_LAYOUT_KEY = "mainkeys_layout";
-    private static final String MAINKEYS_LAYOUT_PROPERTY = "persist.qemu.hw.mainkeys_layout";
-    
-    private static final String MAINKEYS_MUSIC_KEY = "mainkeys_music";
-    private static final String MAINKEYS_MUSIC_PROPERTY = "persist.qemu.hw.mainkeys_music";
 
     private IWindowManager mWindowManager;
     private IBackupManager mBackupManager;
@@ -252,15 +230,6 @@ public class DevelopmentSettings extends SettingsPreferenceFragment
     private ListPreference mAppProcessLimit;
 
     private SwitchPreference mShowAllANRs;
-    
-    //urom
-    private ListPreference mRamMinfree;
-    private ListPreference mZramSize;
-    private ListPreference mDozeBrightness;
-    private ListPreference mLightbarMode;
-    private SwitchPreference mLightbarFlash;
-    private ListPreference mMainkeysLayout;
-    private SwitchPreference mMainkeysMusic;
 
     private PreferenceScreen mProcessStats;
     private final ArrayList<Preference> mAllPrefs = new ArrayList<Preference>();
@@ -398,15 +367,6 @@ public class DevelopmentSettings extends SettingsPreferenceFragment
 
         mProcessStats = (PreferenceScreen) findPreference(PROCESS_STATS);
         mAllPrefs.add(mProcessStats);
-        
-        //urom
-        mRamMinfree = addListPreference(RAM_MINFREE_KEY);
-        mZramSize = addListPreference(ZRAM_SIZE_KEY);
-        mDozeBrightness = addListPreference(DOZE_BRIGHTNESS_KEY);
-        mLightbarMode = addListPreference(LIGHTBAR_MODE_KEY);
-        mLightbarFlash = (SwitchPreference) findPreference(LIGHTBAR_FLASH_KEY);
-        mMainkeysLayout = addListPreference(MAINKEYS_LAYOUT_KEY);
-        mMainkeysMusic = (SwitchPreference) findPreference(MAINKEYS_MUSIC_KEY);
     }
 
     private ListPreference addListPreference(String prefKey) {
@@ -586,15 +546,6 @@ public class DevelopmentSettings extends SettingsPreferenceFragment
         updateSimulateColorSpace();
         updateUseNuplayerOptions();
         updateUSBAudioOptions();
-        
-        //urom
-        updateRamMinfreeOptions();
-        updateZramSizeOptions();
-        updateDozeBrightnessOptions();
-        updateLightbarModeOptions();
-        updateLightbarFlashOptions();
-        updateMainkeysLayoutOptions();
-        updateMainkeysMusicOptions();
     }
 
     private void resetDangerousOptions() {
@@ -1345,129 +1296,7 @@ public class DevelopmentSettings extends SettingsPreferenceFragment
                 .create()
                 .show();
     }
-    
-    //urom
-    private void updateRamMinfreeOptions() {
-        String value = SystemProperties.get(RAM_MINFREE_PROPERTY, "-1");
-        int index = mRamMinfree.findIndexOfValue(value);
-        if (index == -1) {
-            index = mRamMinfree.getEntryValues().length - 1;
-        }
-        mRamMinfree.setValueIndex(index);
-        mRamMinfree.setSummary(mRamMinfree.getEntries()[index]);
-    }
 
-    private void writeRamMinfreeOptions(Object newValue) {
-        if (newValue.toString().contentEquals("-2")) {
-            // custom
-            return;
-        }
-        
-        SystemProperties.set(RAM_MINFREE_PROPERTY, newValue.toString());
-        updateRamMinfreeOptions();
-    }
-
-    private void updateZramSizeOptions() {
-        String value = SystemProperties.get(ZRAM_SIZE_PROPERTY, "0");
-        int index = mZramSize.findIndexOfValue(value);
-        if (index == -1) {
-            index = mZramSize.getEntryValues().length - 1;
-        }
-        mZramSize.setValueIndex(index);
-        mZramSize.setSummary(mZramSize.getEntries()[index]);
-    }
-
-    private void writeZramSizeOptions(Object newValue) {
-        String value = newValue.toString();
-    
-        if (value.contentEquals("-2")) {
-            // custom
-            return;
-        }
-        
-        SystemProperties.set(ZRAM_SIZE_PROPERTY, value);
-        
-        if (value.contentEquals("0")) {
-            SystemProperties.set(ZRAM_ENABLE_PROPERTY, "false");
-        } else {
-            SystemProperties.set(ZRAM_ENABLE_PROPERTY, "true");
-        }
-        
-        updateZramSizeOptions();
-    }
-    
-    private void updateDozeBrightnessOptions() {
-        String value = SystemProperties.get(DOZE_BRIGHTNESS_PROPERTY, "-1");
-        int index = mDozeBrightness.findIndexOfValue(value);
-        if (index == -1) {
-            index = mDozeBrightness.getEntryValues().length - 1;
-        }
-        mDozeBrightness.setValueIndex(index);
-        mDozeBrightness.setSummary((mDozeBrightness.getEntries()[index]).toString().replace("%","%%"));
-    }
-
-    private void writeDozeBrightnessOptions(Object newValue) {
-        if (newValue.toString().contentEquals("-2")) {
-            // custom
-            return;
-        }
-        
-        SystemProperties.set(DOZE_BRIGHTNESS_PROPERTY, newValue.toString());
-        updateDozeBrightnessOptions();
-    }
-    
-    private void updateLightbarModeOptions() {
-        String value = SystemProperties.get(LIGHTBAR_MODE_PROPERTY, "1");
-        int index = mLightbarMode.findIndexOfValue(value);
-        if (index == -1) {
-            index = 1;
-        }
-        mLightbarMode.setValueIndex(index);
-        mLightbarMode.setSummary(mLightbarMode.getEntries()[index]);
-    }
-    
-    private void writeLightbarModeOptions(Object newValue) {
-        SystemProperties.set(LIGHTBAR_MODE_PROPERTY, newValue.toString());
-        updateLightbarModeOptions();
-    }
-    
-    private void updateLightbarFlashOptions() {
-        updateSwitchPreference(mLightbarFlash, 
-                !SystemProperties.get(LIGHTBAR_FLASH_PROPERTY, "1").contentEquals("0"));
-    }
-    
-    private void writeLightbarFlashOptions() {
-        SystemProperties.set(LIGHTBAR_FLASH_PROPERTY, 
-                mLightbarFlash.isChecked() ? "1" : "0");
-        updateLightbarFlashOptions();
-    }
-    
-    private void updateMainkeysLayoutOptions() {
-        String value = SystemProperties.get(MAINKEYS_LAYOUT_PROPERTY, "1");
-        int index = mMainkeysLayout.findIndexOfValue(value);
-        if (index == -1) {
-            index = 1;
-        }
-        mMainkeysLayout.setValueIndex(index);
-        mMainkeysLayout.setSummary(mMainkeysLayout.getEntries()[index]);
-    }
-    
-    private void writeMainkeysLayoutOptions(Object newValue) {
-        SystemProperties.set(MAINKEYS_LAYOUT_PROPERTY, newValue.toString());
-        updateMainkeysLayoutOptions();
-    }
-    
-    private void updateMainkeysMusicOptions() {
-        updateSwitchPreference(mMainkeysMusic, 
-                !SystemProperties.get(MAINKEYS_MUSIC_PROPERTY, "1").contentEquals("0"));
-    }
-    
-    private void writeMainkeysMusicOptions() {
-        SystemProperties.set(MAINKEYS_MUSIC_PROPERTY, 
-                mMainkeysMusic.isChecked() ? "1" : "0");
-        updateMainkeysMusicOptions();
-    }
-    
     @Override
     public void onSwitchChanged(Switch switchView, boolean isChecked) {
         if (switchView != mSwitchBar.getSwitch()) {
@@ -1625,10 +1454,6 @@ public class DevelopmentSettings extends SettingsPreferenceFragment
             writeUseAwesomePlayerOptions();
         } else if (preference == mUSBAudio) {
             writeUSBAudioOptions();
-        } else if (preference == mMainkeysMusic) {
-            writeMainkeysMusicOptions();
-        } else if (preference == mLightbarFlash) {
-            writeLightbarFlashOptions();
         } else {
             return super.onPreferenceTreeClick(preferenceScreen, preference);
         }
@@ -1682,21 +1507,6 @@ public class DevelopmentSettings extends SettingsPreferenceFragment
             return true;
         } else if (preference == mSimulateColorSpace) {
             writeSimulateColorSpace(newValue);
-            return true;
-        } else if (preference == mRamMinfree) {
-            writeRamMinfreeOptions(newValue);
-            return true;
-        } else if (preference == mZramSize) {
-            writeZramSizeOptions(newValue);
-            return true;
-        } else if (preference == mDozeBrightness) {
-            writeDozeBrightnessOptions(newValue);
-            return true;
-        } else if (preference == mLightbarMode) {
-            writeLightbarModeOptions(newValue);
-            return true;
-        } else if (preference == mMainkeysLayout) {
-            writeMainkeysLayoutOptions(newValue);
             return true;
         }
         return false;
