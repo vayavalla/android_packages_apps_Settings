@@ -116,7 +116,7 @@
             android:permission="android.permission.REQUEST_SUPERUSER"
             android:process=":superuser"
             android:taskAffinity="com.android.settings.superuser"
-            android:theme="@style/RequestThemeDark" />
+            android:theme="@style/RequestThemeLight" />
         <!-- Only system/su can open this activity -->
         <!-- This is activity is started in multiuser mode when the user invoking su -->
         <!-- is not the device owner (user id 0). -->
@@ -129,7 +129,7 @@
             android:permission="android.permission.REQUEST_SUPERUSER"
             android:process=":superuser"
             android:taskAffinity="com.android.settings.superuser"
-            android:theme="@style/RequestThemeDark" />
+            android:theme="@style/RequestThemeLight" />
 
         <!-- Multiple instances of this activity can be running for multiple su requests -->
         <activity
@@ -140,7 +140,7 @@
             android:label="@string/request"
             android:process=":superuser"
             android:taskAffinity="com.android.settings.superuser"
-            android:theme="@style/RequestThemeDark" />
+            android:theme="@style/RequestThemeLight" />
 
         <receiver
             android:name="com.koushikdutta.superuser.SuReceiver"
