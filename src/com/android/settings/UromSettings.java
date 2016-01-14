@@ -41,6 +41,8 @@ public class UromSettings extends SettingsPreferenceFragment
     private static final String ZRAM_SIZE_KEY = "zram_size";
     private static final String ZRAM_SIZE_PROPERTY = "persist.sys.zram_size";
     private static final String ZRAM_ENABLE_PROPERTY = "persist.sys.zram_enable";
+    private static final String KSM_KEY = "ksm";
+    private static final String KSM_PROPERTY = "persist.ksm.enable";
     
     private static final String DOZE_BRIGHTNESS_KEY = "doze_brightness";
     private static final String DOZE_BRIGHTNESS_PROPERTY = "persist.screen.doze_brightness";
@@ -61,6 +63,7 @@ public class UromSettings extends SettingsPreferenceFragment
     //urom
     private ListPreference mRamMinfree;
     private ListPreference mZramSize;
+    private SwitchPreference mKsm;
     private ListPreference mDozeBrightness;
     private SwitchPreference mDozeInvert;
     private ListPreference mLightbarMode;
@@ -77,6 +80,7 @@ public class UromSettings extends SettingsPreferenceFragment
         //urom
         mRamMinfree = addListPreference(RAM_MINFREE_KEY);
         mZramSize = addListPreference(ZRAM_SIZE_KEY);
+        mKsm = (SwitchPreference) findPreference(KSM_KEY);
         mDozeBrightness = addListPreference(DOZE_BRIGHTNESS_KEY);
         mDozeInvert = (SwitchPreference) findPreference(DOZE_INVERT_KEY);
         mLightbarMode = addListPreference(LIGHTBAR_MODE_KEY);
@@ -107,6 +111,7 @@ public class UromSettings extends SettingsPreferenceFragment
         //urom
         updateRamMinfreeOptions();
         updateZramSizeOptions();
+        updateKsmOptions();
         updateDozeBrightnessOptions();
         updateDozeInvertOptions();
         updateLightbarModeOptions();
@@ -163,6 +168,16 @@ public class UromSettings extends SettingsPreferenceFragment
         }
         
         updateZramSizeOptions();
+    }
+
+    private void updateKsmOptions() {
+        mKsm.setChecked(SystemProperties.getBoolean(KSM_PROPERTY, false));
+    }
+    
+    private void writeKsmOptions() {
+        SystemProperties.set(KSM_PROPERTY, 
+                mKsm.isChecked() ? "true" : "false");
+        updateKsmOptions();
     }
     
     private void updateDozeBrightnessOptions() {
@@ -253,6 +268,8 @@ public class UromSettings extends SettingsPreferenceFragment
             writeLightbarFlashOptions();
         } else if (preference == mDozeInvert) {
             writeDozeInvertOptions();
+        } else if (preference == mKsm) {
+            writeKsmOptions();
         } else {
             return super.onPreferenceTreeClick(preferenceScreen, preference);
         }

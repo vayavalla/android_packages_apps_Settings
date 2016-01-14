@@ -66,4 +66,8 @@
     multiple font sizes in a limited amount of space. -->
     <string name="font_size_sample">Sample</string>
 
+    <!-- KSM -->
+    <string name="ksm_title">KSM</string>
+    <string name="ksm_summary">Kernel same-page merging</string>
+
 </resources>

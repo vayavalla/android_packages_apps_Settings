@@ -77,6 +77,11 @@
             android:entries="@array/zram_size_entries"
             android:entryValues="@array/zram_size_values" />
 
+        <SwitchPreference
+            android:key="ksm"
+            android:title="@string/ksm_title"
+            android:summary="@string/ksm_summary" />
+
     </PreferenceCategory>
 
 </PreferenceScreen>
