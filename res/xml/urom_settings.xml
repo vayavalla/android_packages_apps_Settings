@@ -84,4 +84,14 @@
 
     </PreferenceCategory>
 
+    <PreferenceCategory android:key="urom_security_category"
+            android:title="@string/security_settings_title">
+
+        <SwitchPreference
+            android:key="allow_signature_fake"
+            android:title="@string/allow_signature_fake"
+            android:summary="@string/allow_signature_fake_summary"/>
+
+    </PreferenceCategory>
+
 </PreferenceScreen>

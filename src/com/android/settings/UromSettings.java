@@ -16,6 +16,9 @@
 
 package com.android.settings;
 
+import android.app.AlertDialog;
+import android.app.Dialog;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.SystemProperties;
@@ -31,7 +34,8 @@ import com.android.internal.logging.MetricsLogger;
  * Displays preferences for urom.
  */
 public class UromSettings extends SettingsPreferenceFragment
-        implements OnPreferenceChangeListener {
+        implements DialogInterface.OnClickListener, DialogInterface.OnDismissListener,
+                   OnPreferenceChangeListener {
     private static final String TAG = "UromSettings";
 
     //urom
@@ -59,6 +63,9 @@ public class UromSettings extends SettingsPreferenceFragment
     
     private static final String MAINKEYS_MUSIC_KEY = "mainkeys_music";
     private static final String MAINKEYS_MUSIC_PROPERTY = "persist.qemu.hw.mainkeys_music";
+
+    private static final String ALLOW_SIGNATURE_FAKE_KEY = "allow_signature_fake";
+    private static final String ALLOW_SIGNATURE_FAKE_PROPERTY = "persist.sys.fake-signature";
     
     //urom
     private ListPreference mRamMinfree;
@@ -70,6 +77,10 @@ public class UromSettings extends SettingsPreferenceFragment
     private SwitchPreference mLightbarFlash;
     private ListPreference mMainkeysLayout;
     private SwitchPreference mMainkeysMusic;
+    private SwitchPreference mAllowSignatureFake;
+
+    //Dialog
+    private Dialog mAllowSignatureFakeDialog;
 
     @Override
     public void onCreate(Bundle icicle) {
@@ -87,6 +98,10 @@ public class UromSettings extends SettingsPreferenceFragment
         mLightbarFlash = (SwitchPreference) findPreference(LIGHTBAR_FLASH_KEY);
         mMainkeysLayout = addListPreference(MAINKEYS_LAYOUT_KEY);
         mMainkeysMusic = (SwitchPreference) findPreference(MAINKEYS_MUSIC_KEY);
+        mAllowSignatureFake = (SwitchPreference) findPreference(ALLOW_SIGNATURE_FAKE_KEY);
+
+        //Dialog
+        mAllowSignatureFakeDialog = null;
     }
 
     private ListPreference addListPreference(String prefKey) {
@@ -118,6 +133,7 @@ public class UromSettings extends SettingsPreferenceFragment
         updateLightbarFlashOptions();
         updateMainkeysLayoutOptions();
         updateMainkeysMusicOptions();
+        updateAllowSignatureFakeOptions();
     }
     
     //urom
@@ -260,6 +276,16 @@ public class UromSettings extends SettingsPreferenceFragment
         updateMainkeysMusicOptions();
     }
 
+    private void updateAllowSignatureFakeOptions() {
+        mAllowSignatureFake.setChecked(SystemProperties.getBoolean(ALLOW_SIGNATURE_FAKE_PROPERTY, false));
+    }
+    
+    private void writeAllowSignatureFakeOptions(boolean value) {
+        SystemProperties.set(ALLOW_SIGNATURE_FAKE_PROPERTY, 
+                value ? "true" : "false");
+        updateAllowSignatureFakeOptions();
+    }
+
     @Override
     public boolean onPreferenceTreeClick(PreferenceScreen preferenceScreen, Preference preference) {
         if (preference == mMainkeysMusic) {
@@ -270,6 +296,22 @@ public class UromSettings extends SettingsPreferenceFragment
             writeDozeInvertOptions();
         } else if (preference == mKsm) {
             writeKsmOptions();
+        } else if (preference == mAllowSignatureFake) {
+            if (mAllowSignatureFake.isChecked()) {
+                if (mAllowSignatureFakeDialog != null) {
+                    dismissDialogs();
+                }
+                mAllowSignatureFakeDialog = new AlertDialog.Builder(getActivity()).setMessage(
+                        getResources().getString(R.string.allow_signature_fake_warning))
+                        .setTitle(R.string.allow_signature_fake)
+                        .setIconAttribute(android.R.attr.alertDialogIcon)
+                        .setPositiveButton(android.R.string.yes, this)
+                        .setNegativeButton(android.R.string.no, this)
+                        .show();
+                mAllowSignatureFakeDialog.setOnDismissListener(this);
+            } else {
+                writeAllowSignatureFakeOptions(false);
+            }
         } else {
             return super.onPreferenceTreeClick(preferenceScreen, preference);
         }
@@ -297,4 +339,35 @@ public class UromSettings extends SettingsPreferenceFragment
         }
         return false;
     }
+
+    private void dismissDialogs() {
+        if (mAllowSignatureFakeDialog != null) {
+            mAllowSignatureFakeDialog.dismiss();
+            mAllowSignatureFakeDialog = null;
+        }
+    }
+
+    public void onClick(DialogInterface dialog, int which) {
+        if (dialog == mAllowSignatureFakeDialog) {
+            if (which == DialogInterface.BUTTON_POSITIVE) {
+                writeAllowSignatureFakeOptions(true);
+            } else {
+                // Reset the toggle
+                mAllowSignatureFake.setChecked(false);
+            }
+        }
+    }
+
+    public void onDismiss(DialogInterface dialog) {
+        if (dialog == mAllowSignatureFakeDialog) {
+            updateAllowSignatureFakeOptions();
+            mAllowSignatureFakeDialog = null;
+        }
+    }
+
+    @Override
+    public void onDestroy() {
+        dismissDialogs();
+        super.onDestroy();
+    } 
 }

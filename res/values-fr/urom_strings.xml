@@ -62,4 +62,9 @@
     <!-- WakeUp -->
     <string name="wakeup_title">Wake Up</string>
 
+    <!-- Allow fake signature checkbox in developer settings -->
+    <string name="allow_signature_fake">Signature spoofing</string>
+    <string name="allow_signature_fake_summary">Autoriser une application à se faire passer pour une autre</string>
+    <string name="allow_signature_fake_warning">Contourner le système de sécurité peut entrainer de serieux problèmes pour votre vie privée et votre sécurité! Verifiez que seulement les applications légitimes utilisent cette autorisation.</string>
+
 </resources>
