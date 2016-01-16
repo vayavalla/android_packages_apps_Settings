@@ -80,7 +80,7 @@
         <!-- Wake Up -->
         <dashboard-tile
                 android:id="@+id/wakeup_settings"
-                android:icon="@drawable/ic_settings_display"
+                android:icon="@drawable/ic_settings_display_wakeup"
                 android:title="@string/wakeup_title">
                 <intent
                     android:action="android.intent.action.MAIN"
