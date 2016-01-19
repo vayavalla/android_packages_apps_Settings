@@ -98,5 +98,33 @@
         <item>0</item>
         <item>1</item>
     </string-array>
+    
+    <!-- Night/Day Mode -->
+    <string-array name="color_mode_entries">
+        <item>@string/color_mode_day</item>
+        <item>@string/color_mode_night</item>
+    </string-array>
+    
+    <string-array name="color_preset_entries">
+        <item>@string/urom_generic_custom</item>
+        <item>@string/color_preset_1900</item>
+        <item>@string/color_preset_2600</item>
+        <item>@string/color_preset_2850</item>
+        <item>@string/color_preset_3200</item>
+        <item>@string/color_preset_5200</item>
+        <item>@string/color_preset_5400</item>
+        <item>@string/color_preset_6000</item>
+    </string-array>
+    
+    <string-array name="color_preset_values">
+        <item>custom</item>
+        <item>255 147 41</item>
+        <item>255 197 143</item>
+        <item>255 214 170</item>
+        <item>255 241 224</item>
+        <item>255 250 244</item>
+        <item>255 255 251</item>
+        <item>255 255 255</item>
+    </string-array>
 
 </resources>

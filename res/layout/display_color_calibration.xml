@@ -26,15 +26,30 @@
             android:paddingEnd="20dip"
             android:paddingBottom="20dip">
 
+        <Spinner
+                android:id="@+id/mode_spinner"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:paddingTop="10dip" />
+        
+        <Spinner
+                android:id="@+id/preset_spinner"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_toRightOf="@id/mode_spinner"
+                android:paddingTop="10dip" />
+        
         <TextView android:id="@+id/color_red_text"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="@string/color_red_title"
+                android:layout_below="@id/mode_spinner"
                 android:paddingTop="10dip" />
         <TextView android:id="@+id/color_red_value"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_alignParentRight="true"
+                android:layout_below="@id/mode_spinner"
                 android:paddingTop="10dip" />
         <SeekBar android:id="@+id/color_red_seekbar"
                 android:layout_width="match_parent"

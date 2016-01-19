@@ -28,12 +28,17 @@ import android.preference.PreferenceManager;
 import android.text.TextUtils;
 import android.util.AttributeSet;
 import android.view.View;
+import android.widget.ArrayAdapter;
+import android.widget.AdapterView;
 import android.widget.SeekBar;
+import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Button;
 
 import com.android.settings.R;
 import com.android.settings.util.FileUtils;
+
+import java.lang.CharSequence;
 
 /**
  * Special preference type that allows configuration of Color settings
@@ -41,7 +46,11 @@ import com.android.settings.util.FileUtils;
 public class DisplayColor extends DialogPreference {
     private static final String TAG = "ColorCalibration";
     private static final String COLOR_FILE = "/sys/devices/platform/mdp.458753/kcal";
-    private static final String COLOR_CALIBRATION_PROPERTY = "persist.screen.color_control";
+    private static final String COLOR_MODE_PROPERTY = "screen.color_isday";
+    private static final String COLOR_MODE_DAY_PROPERTY = "persist.screen.color_day";
+    private static final String COLOR_MODE_NIGHT_PROPERTY = "persist.screen.color_night";
+    
+    private static final String COLOR_MODE_DEFAULT_VALUE = "255 255 255";
 
     // These arrays must all match in length and order
     private static final int[] SEEKBAR_ID = new int[] {
@@ -56,18 +65,37 @@ public class DisplayColor extends DialogPreference {
         R.id.color_blue_value
     };
 
+    private Spinner mModeSpinner;
+    private Spinner mPresetSpinner;
     private ColorSeekBar[] mSeekBars = new ColorSeekBar[SEEKBAR_ID.length];
     private String[] mCurrentColors;
     private String mOriginalColors;
+    private boolean mCurrentEditModeIsDay;
+    private String[] mPresetValues;
 
     public DisplayColor(Context context, AttributeSet attrs) {
         super(context, attrs);
+        
+        mCurrentEditModeIsDay = isDayMode();
+        mOriginalColors = null;
 
         setDialogLayoutResource(R.layout.display_color_calibration);
+    }
+    
+    private boolean isDayMode() {
+        return SystemProperties.getBoolean(COLOR_MODE_PROPERTY, true);
     }
 
     private String getCurColors() {
         return FileUtils.readOneLine(COLOR_FILE);
+    }
+    
+    private String getDayColors() {
+        return SystemProperties.get(COLOR_MODE_DAY_PROPERTY, COLOR_MODE_DEFAULT_VALUE);
+    }
+    
+    private String getNightColors() {
+        return SystemProperties.get(COLOR_MODE_NIGHT_PROPERTY, COLOR_MODE_DEFAULT_VALUE);
     }
 
     private boolean setColors(String colors) {
@@ -97,16 +125,70 @@ public class DisplayColor extends DialogPreference {
     @Override
     protected void onBindDialogView(View view) {
         super.onBindDialogView(view);
-
-        mOriginalColors = getCurColors();
-        mCurrentColors = mOriginalColors.split(" ");
-
+        
+        mPresetValues = getContext().getResources().getStringArray(R.array.color_preset_values);
+        
+        //Mode Spinner
+        mModeSpinner = (Spinner) view.findViewById(R.id.mode_spinner);
+        
+        ArrayAdapter<CharSequence> adapterMode = ArrayAdapter.createFromResource(getContext(),
+                                                 R.array.color_mode_entries,
+                                                 android.R.layout.simple_spinner_item);
+                                                 
+        adapterMode.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        mModeSpinner.setAdapter(adapterMode);
+        
+        //Preset Spinner
+        mPresetSpinner = (Spinner) view.findViewById(R.id.preset_spinner);
+        
+        ArrayAdapter<CharSequence> adapterPreset = ArrayAdapter.createFromResource(getContext(),
+                                                 R.array.color_preset_entries,
+                                                 android.R.layout.simple_spinner_item);
+                                                 
+        adapterPreset.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        mPresetSpinner.setAdapter(adapterPreset);
+        
+        // select mode
+        mModeSpinner.setSelection(mCurrentEditModeIsDay ? 0 : 1);
+        
+        // Seekbar
         for (int i = 0; i < SEEKBAR_ID.length; i++) {
             SeekBar seekBar = (SeekBar) view.findViewById(SEEKBAR_ID[i]);
             TextView value = (TextView) view.findViewById(SEEKBAR_VALUE_ID[i]);
             mSeekBars[i] = new ColorSeekBar(seekBar, value, i);
-            mSeekBars[i].setValueFromString(mCurrentColors[i]);
         }
+        
+        //Spinner listener
+        mModeSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> parent, View view, int pos, long id) {
+        
+                mCurrentEditModeIsDay = (pos == 0);
+                mOriginalColors = null;
+                initUIandScreen();
+            }
+    
+            @Override
+            public void onNothingSelected(AdapterView<?> parent) { }
+        });
+        
+        
+        mPresetSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> parent, View view, int pos, long id) {
+            
+                if (pos != 0) {
+                    mCurrentColors = mPresetValues[pos].split(" ");
+                    updateUIandScreen();
+                }
+            }
+            
+            @Override
+            public void onNothingSelected(AdapterView<?> parent) { }
+        });
+
+        //initUIandScreen
+        initUIandScreen();
     }
 
     @Override
@@ -120,12 +202,8 @@ public class DisplayColor extends DialogPreference {
         defaultsButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                int defaultValue = getDefValue();
-                for (int i = 0; i < mSeekBars.length; i++) {
-                    mSeekBars[i].mSeekBar.setProgress(defaultValue);
-                    mCurrentColors[i] = String.valueOf(defaultValue);
-                }
-                setColors(TextUtils.join(" ", mCurrentColors));
+                mCurrentColors = COLOR_MODE_DEFAULT_VALUE.split(" ");
+                updateUIandScreen();
             }
         });
     }
@@ -135,10 +213,10 @@ public class DisplayColor extends DialogPreference {
         super.onDialogClosed(positiveResult);
 
         if (positiveResult) {
-            SystemProperties.set(COLOR_CALIBRATION_PROPERTY, getCurColors());
-        } else if (mOriginalColors != null) {
-            setColors(mOriginalColors);
+            SystemProperties.set(mCurrentEditModeIsDay ? COLOR_MODE_DAY_PROPERTY : COLOR_MODE_NIGHT_PROPERTY, getCurColors());
         }
+        
+        restoreScreen();
     }
 
     @Override
@@ -152,9 +230,10 @@ public class DisplayColor extends DialogPreference {
         final SavedState myState = new SavedState(superState);
         myState.currentColors = mCurrentColors;
         myState.originalColors = mOriginalColors;
+        myState.currentEditModeIsDay = mCurrentEditModeIsDay ? 1 : 0;
 
         // Restore the old state when the activity or dialog is being paused
-        setColors(mOriginalColors);
+        restoreScreen();
         mOriginalColors = null;
 
         return myState;
@@ -172,23 +251,50 @@ public class DisplayColor extends DialogPreference {
         super.onRestoreInstanceState(myState.getSuperState());
         mOriginalColors = myState.originalColors;
         mCurrentColors = myState.currentColors;
-        for (int i = 0; i < mSeekBars.length; i++) {
-            mSeekBars[i].setValueFromString(mCurrentColors[i]);
-        }
-        setColors(TextUtils.join(" ", mCurrentColors));
+        mCurrentEditModeIsDay = myState.currentEditModeIsDay == 1 ? true : false;
+        
+        updateUIandScreen();
     }
 
-/*
-    public void restore(Context context) {
-        String value = SystemProperties.get(COLOR_CALIBRATION_PROPERTY, "255 255 255");
+    public void restoreScreen() {
+        String value = isDayMode() ? getDayColors() : getNightColors();
 
         setColors(value);
     }
-*/
-
+    
+    private void initUIandScreen() {
+        if(mOriginalColors == null) {
+            mOriginalColors = mCurrentEditModeIsDay ? getDayColors() : getNightColors();
+            mCurrentColors = mOriginalColors.split(" ");
+        }
+        
+        changePresetSelection(mOriginalColors);
+        updateUIandScreen();
+    }
+    
+    private void updateUIandScreen() {        
+        for (int i = 0; i < SEEKBAR_ID.length; i++) {
+            mSeekBars[i].setCurrentValue();
+        }
+        
+        setColors(TextUtils.join(" ", mCurrentColors));
+    }
+    
+    private void changePresetSelection(String valueToFind) {
+        for (int i = 0; i < mPresetValues.length; i++) {
+            if(mPresetValues[i].contentEquals(valueToFind)) {
+                mPresetSpinner.setSelection(i);
+                return;
+            }
+        }
+        
+        mPresetSpinner.setSelection(0);
+    }
+    
     private static class SavedState extends BaseSavedState {
         String originalColors;
         String[] currentColors;
+        int currentEditModeIsDay;
 
         public SavedState(Parcelable superState) {
             super(superState);
@@ -198,6 +304,7 @@ public class DisplayColor extends DialogPreference {
             super(source);
             originalColors = source.readString();
             currentColors = source.createStringArray();
+            currentEditModeIsDay = source.readInt();
         }
 
         @Override
@@ -205,6 +312,7 @@ public class DisplayColor extends DialogPreference {
             super.writeToParcel(dest, flags);
             dest.writeString(originalColors);
             dest.writeStringArray(currentColors);
+            dest.writeInt(currentEditModeIsDay);
         }
 
         public static final Parcelable.Creator<SavedState> CREATOR =
@@ -237,6 +345,10 @@ public class DisplayColor extends DialogPreference {
         public void setValueFromString(String valueString) {
             mSeekBar.setProgress(Integer.valueOf(valueString));
         }
+        
+        public void setCurrentValue() {
+            setValueFromString(mCurrentColors[mIndex]);
+        }
 
         @Override
         public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
@@ -245,7 +357,9 @@ public class DisplayColor extends DialogPreference {
 
             if (fromUser) {
                 mCurrentColors[mIndex] = String.valueOf(progress + min);
-                setColors(TextUtils.join(" ", mCurrentColors));
+                String value = TextUtils.join(" ", mCurrentColors);
+                changePresetSelection(value);
+                setColors(value);
             }
 
             int percent = Math.round(100F * progress / (max - min));
