@@ -110,6 +110,14 @@
                     android:targetClass="eu.chainfire.supersu.MainActivity" />
         </dashboard-tile>
 
+        <!-- Superuser -->
+        <dashboard-tile
+                android:id="@+id/superuser_settings"
+                android:icon="@drawable/ic_action_permission"
+                android:title="@string/superuser"
+                android:fragment="com.koushikdutta.superuser.PolicyNativeFragment"
+                />
+
         <!-- More -->
         <dashboard-tile
                 android:id="@+id/urom_settings"
