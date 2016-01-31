@@ -67,6 +67,9 @@ public class UromSettings extends SettingsPreferenceFragment
     private static final String ALLOW_SIGNATURE_FAKE_KEY = "allow_signature_fake";
     private static final String ALLOW_SIGNATURE_FAKE_PROPERTY = "persist.sys.fake-signature";
     
+    private static final String AUTOPOWER_KEY = "autopower";
+    private static final String AUTOPOWER_PROPERTY = "persist.sys.autopower";
+    
     //urom
     private ListPreference mRamMinfree;
     private ListPreference mZramSize;
@@ -78,6 +81,7 @@ public class UromSettings extends SettingsPreferenceFragment
     private ListPreference mMainkeysLayout;
     private SwitchPreference mMainkeysMusic;
     private SwitchPreference mAllowSignatureFake;
+    private SwitchPreference mAutoPower;
 
     //Dialog
     private Dialog mAllowSignatureFakeDialog;
@@ -99,6 +103,7 @@ public class UromSettings extends SettingsPreferenceFragment
         mMainkeysLayout = addListPreference(MAINKEYS_LAYOUT_KEY);
         mMainkeysMusic = (SwitchPreference) findPreference(MAINKEYS_MUSIC_KEY);
         mAllowSignatureFake = (SwitchPreference) findPreference(ALLOW_SIGNATURE_FAKE_KEY);
+        mAutoPower = (SwitchPreference) findPreference(AUTOPOWER_KEY);
 
         //Dialog
         mAllowSignatureFakeDialog = null;
@@ -134,6 +139,7 @@ public class UromSettings extends SettingsPreferenceFragment
         updateMainkeysLayoutOptions();
         updateMainkeysMusicOptions();
         updateAllowSignatureFakeOptions();
+        updateAutoPowerOptions();
     }
     
     //urom
@@ -286,6 +292,16 @@ public class UromSettings extends SettingsPreferenceFragment
         updateAllowSignatureFakeOptions();
     }
 
+    private void updateAutoPowerOptions() {
+        mAutoPower.setChecked(SystemProperties.getBoolean(AUTOPOWER_PROPERTY, true));
+    }
+    
+    private void writeAutoPowerOptions() {
+        SystemProperties.set(AUTOPOWER_PROPERTY, 
+                mAutoPower.isChecked() ? "true" : "false");
+        updateAutoPowerOptions();
+    }
+
     @Override
     public boolean onPreferenceTreeClick(PreferenceScreen preferenceScreen, Preference preference) {
         if (preference == mMainkeysMusic) {
@@ -312,6 +328,8 @@ public class UromSettings extends SettingsPreferenceFragment
             } else {
                 writeAllowSignatureFakeOptions(false);
             }
+        } else if (preference == mAutoPower) {
+            writeAutoPowerOptions();
         } else {
             return super.onPreferenceTreeClick(preferenceScreen, preference);
         }

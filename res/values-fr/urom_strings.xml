@@ -13,6 +13,7 @@
     <string name="urom_help_summary">(*) nécessite un redémarrage</string>
     <string name="urom_screen_adaptive">Adaptation</string>
     <string name="urom_settings_title">Plus</string>
+    <string name="urom_other_category">Divers</string>
  
     <!-- Ram minfree -->
     <string name="ram_minfree_title">Low memory killer (*)</string>
@@ -71,4 +72,7 @@
     <string name="color_mode_day">Jour</string>
     <string name="color_mode_night">Nuit</string>
 
+    <!-- AutoPowerModes -->
+    <string name="autopower_title">Ecomomie d\'énergie (*)</string>
+    <string name="autopower_summary">Mise en veille des applications</string>
 </resources>

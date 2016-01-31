@@ -94,4 +94,14 @@
 
     </PreferenceCategory>
 
+    <PreferenceCategory android:key="urom_other_category"
+            android:title="@string/urom_other_category">
+
+        <SwitchPreference
+            android:key="autopower"
+            android:title="@string/autopower_title"
+            android:summary="@string/autopower_summary"/>
+
+    </PreferenceCategory>
+
 </PreferenceScreen>

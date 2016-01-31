@@ -13,6 +13,7 @@
     <string name="urom_help_summary">(*) need a reboot</string>
     <string name="urom_screen_adaptive">Adaptive</string>
     <string name="urom_settings_title">More</string>
+    <string name="urom_other_category">Other</string>
  
     <!-- Ram minfree -->
     <string name="ram_minfree_title">Low memory killer (*)</string>
@@ -86,4 +87,7 @@
     <string name="color_preset_5400">High Noon Sun</string>
     <string name="color_preset_6000">Direct Sunlight</string>
 
+    <!-- AutoPowerModes -->
+    <string name="autopower_title">Auto Power Save</string>
+    <string name="autopower_summary">Ambient and applications standby</string>
 </resources>
