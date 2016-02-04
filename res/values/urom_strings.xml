@@ -14,6 +14,7 @@
     <string name="urom_screen_adaptive">Adaptive</string>
     <string name="urom_settings_title">More</string>
     <string name="urom_other_category">Other</string>
+    <string name="urom_about">Information</string>
  
     <!-- Ram minfree -->
     <string name="ram_minfree_title">Low memory killer (*)</string>
@@ -90,4 +91,17 @@
     <!-- AutoPowerModes -->
     <string name="autopower_title">Auto Power Save (*)</string>
     <string name="autopower_summary">Ambient and applications standby</string>
+
+    <!-- About -->
+    <string name="urom_about_rom">Useful links</string>
+    <string name="urom_about_source_title">Github</string>
+    <string name="urom_about_source_summary">Checkout and contribute</string>
+    <string name="urom_about_xda_title">XDA</string>
+    <string name="urom_about_xda_summary">Thread of the ROM</string>
+    <string name="urom_about_donation_title">Donation</string>
+    <string name="urom_about_developers">Developers</string>
+    <string name="urom_about_leaddeveloper">Lead Developer</string>
+    <string name="urom_about_thanks">Thanks</string>
+    <string name="urom_about_developer">Developer</string>
+    <string name="urom_about_soundfx">Sound FX</string>
 </resources>

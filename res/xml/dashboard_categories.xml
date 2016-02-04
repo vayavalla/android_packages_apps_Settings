@@ -77,6 +77,13 @@
             android:id="@+id/urom_section"
             android:title="@string/urom_category" >
 
+        <!-- Urom About -->
+        <dashboard-tile
+                android:id="@+id/urom_about"
+                android:icon="@drawable/ic_settings_about"
+                android:title="@string/urom_about"
+                android:fragment="com.android.settings.UromAbout" />
+
         <!-- Layers -->
         <dashboard-tile
                 android:id="@+id/bitsyko_layers"

@@ -120,6 +120,7 @@
 
         <!-- Urom Settings -->
         <activity android:name=".UromSettings" />
+        <activity android:name=".UromAbout" />
 
         <!-- Only system/su can open this activity -->
         <!-- This activity will then call the MultitaskSuRequestActivity to create a new task stack -->
