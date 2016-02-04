@@ -88,6 +88,6 @@
     <string name="color_preset_6000">Direct Sunlight</string>
 
     <!-- AutoPowerModes -->
-    <string name="autopower_title">Auto Power Save</string>
+    <string name="autopower_title">Auto Power Save (*)</string>
     <string name="autopower_summary">Ambient and applications standby</string>
 </resources>
