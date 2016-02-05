@@ -74,7 +74,7 @@
     <string name="ksm_summary">Kernel same-page merging</string>
 
     <!-- Allow fake signature checkbox in developer settings -->
-    <string name="allow_signature_fake">Allow signature spoofing</string>
+    <string name="allow_signature_fake">Permitir el cambio de la firma de la aplicación</string>
     <string name="allow_signature_fake_summary">Permitir a las aplicaciones saltar los sistemas de seguridad simulando ser otra aplicación</string>
     <string name="allow_signature_fake_warning">¡Permitir a las aplicaciones saltar los sistemas de seguridad puede llevar a serios problemas de seguridad y privacidad! Comprueba que solo las aplicaciones benignas usan los permisos correspondientes cuando esto está activo.</string>
     
