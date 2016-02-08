@@ -58,6 +58,11 @@
             android:title="@string/mainkeys_music_title"
             android:summary="@string/mainkeys_music_summary"/>
 
+        <SwitchPreference
+            android:key="mainkeys_navbar"
+            android:title="@string/mainkeys_navbar_title"
+            android:summary="@string/mainkeys_navbar_summary"/>
+
     </PreferenceCategory>
 
     <PreferenceCategory android:key="urom_memory_category"

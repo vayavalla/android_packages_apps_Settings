@@ -39,6 +39,10 @@
     <!-- hw keys music -->
     <string name="mainkeys_music_title">Physical Keys Music (*)</string>
     <string name="mainkeys_music_summary">Music controls when screen is off</string>
+
+    <!-- Navigation Bar -->
+    <string name="mainkeys_navbar_title">NavBar (*)</string>
+    <string name="mainkeys_navbar_summary">On-screen keys</string>
  
     <!-- doze -->
     <string name="doze_brightness_title">Ambient brightness level (*)</string>

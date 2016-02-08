@@ -60,9 +60,10 @@ public class UromSettings extends SettingsPreferenceFragment
 
     private static final String MAINKEYS_LAYOUT_KEY = "mainkeys_layout";
     private static final String MAINKEYS_LAYOUT_PROPERTY = "persist.qemu.hw.mainkeys_layout";
-    
     private static final String MAINKEYS_MUSIC_KEY = "mainkeys_music";
     private static final String MAINKEYS_MUSIC_PROPERTY = "persist.qemu.hw.mainkeys_music";
+    private static final String MAINKEYS_NAVBAR_KEY = "mainkeys_navbar";
+    private static final String MAINKEYS_NAVBAR_PROPERTY = "persist.qemu.hw.mainkeys";
 
     private static final String ALLOW_SIGNATURE_FAKE_KEY = "allow_signature_fake";
     private static final String ALLOW_SIGNATURE_FAKE_PROPERTY = "persist.sys.fake-signature";
@@ -80,6 +81,7 @@ public class UromSettings extends SettingsPreferenceFragment
     private SwitchPreference mLightbarFlash;
     private ListPreference mMainkeysLayout;
     private SwitchPreference mMainkeysMusic;
+    private SwitchPreference mMainkeysNavBar;
     private SwitchPreference mAllowSignatureFake;
     private SwitchPreference mAutoPower;
 
@@ -102,6 +104,7 @@ public class UromSettings extends SettingsPreferenceFragment
         mLightbarFlash = (SwitchPreference) findPreference(LIGHTBAR_FLASH_KEY);
         mMainkeysLayout = addListPreference(MAINKEYS_LAYOUT_KEY);
         mMainkeysMusic = (SwitchPreference) findPreference(MAINKEYS_MUSIC_KEY);
+        mMainkeysNavBar = (SwitchPreference) findPreference(MAINKEYS_NAVBAR_KEY);
         mAllowSignatureFake = (SwitchPreference) findPreference(ALLOW_SIGNATURE_FAKE_KEY);
         mAutoPower = (SwitchPreference) findPreference(AUTOPOWER_KEY);
 
@@ -138,6 +141,7 @@ public class UromSettings extends SettingsPreferenceFragment
         updateLightbarFlashOptions();
         updateMainkeysLayoutOptions();
         updateMainkeysMusicOptions();
+        updateMainkeysNavBarOptions();
         updateAllowSignatureFakeOptions();
         updateAutoPowerOptions();
     }
@@ -282,6 +286,16 @@ public class UromSettings extends SettingsPreferenceFragment
         updateMainkeysMusicOptions();
     }
 
+    private void updateMainkeysNavBarOptions() {
+        mMainkeysNavBar.setChecked(!SystemProperties.get(MAINKEYS_NAVBAR_PROPERTY, "1").contentEquals("1"));
+    }
+    
+    private void writeMainkeysNavBarOptions() {
+        SystemProperties.set(MAINKEYS_NAVBAR_PROPERTY, 
+                mMainkeysNavBar.isChecked() ? "0" : "1");
+        updateMainkeysNavBarOptions();
+    }
+
     private void updateAllowSignatureFakeOptions() {
         mAllowSignatureFake.setChecked(SystemProperties.getBoolean(ALLOW_SIGNATURE_FAKE_PROPERTY, false));
     }
@@ -306,6 +320,8 @@ public class UromSettings extends SettingsPreferenceFragment
     public boolean onPreferenceTreeClick(PreferenceScreen preferenceScreen, Preference preference) {
         if (preference == mMainkeysMusic) {
             writeMainkeysMusicOptions();
+        } else if (preference == mMainkeysNavBar) {
+            writeMainkeysNavBarOptions();
         } else if (preference == mLightbarFlash) {
             writeLightbarFlashOptions();
         } else if (preference == mDozeInvert) {

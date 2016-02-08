@@ -39,6 +39,10 @@
     <!-- hw keys music -->
     <string name="mainkeys_music_title">Touches de volume (*)</string>
     <string name="mainkeys_music_summary">Contrôle de la musique écran éteint</string>
+
+    <!-- Navigation Bar -->
+    <string name="mainkeys_navbar_title">NavBar (*)</string>
+    <string name="mainkeys_navbar_summary">Touches sur l\'écran</string>
  
     <!-- doze -->
     <string name="doze_brightness_title">Luminosité en mode veille (*)</string>
